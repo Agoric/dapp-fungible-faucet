@@ -68,18 +68,16 @@ export default async function deployContract(
   // To share the installationHandle, we're going to put it in the
   // board. The board is a shared, on-chain object that maps
   // strings to objects.
-  const CONTRACT_NAME = 'encouragement';
-  const INSTALLATION_HANDLE_BOARD_ID = await E(board).getId(installationHandle);
+  const CONTRACT_NAME = 'faucet';
+  const INSTALLATION_BOARD_ID = await E(board).getId(installationHandle);
   console.log('- SUCCESS! contract code installed on Zoe');
   console.log(`-- Contract Name: ${CONTRACT_NAME}`);
-  console.log(
-    `-- InstallationHandle Board Id: ${INSTALLATION_HANDLE_BOARD_ID}`,
-  );
+  console.log(`-- Installation Board Id: ${INSTALLATION_BOARD_ID}`);
 
   // Save the constants somewhere where the UI and api can find it.
   const dappConstants = {
     CONTRACT_NAME,
-    INSTALLATION_HANDLE_BOARD_ID,
+    INSTALLATION_BOARD_ID,
   };
   const defaultsFile = pathResolve(
     `../ui/public/conf/installationConstants.js`,

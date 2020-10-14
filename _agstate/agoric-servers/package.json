@@ -1,7 +1,7 @@
 {
   "name": "faucet-agservers",
   "version": "0.0.1",
-  "description": "Agoric server instances for dapp-encouragement",
+  "description": "Agoric server instances for dapp",
   "private": true,
   "scripts": {
     "build": "exit 0",

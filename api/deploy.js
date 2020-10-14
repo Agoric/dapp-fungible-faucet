@@ -12,9 +12,6 @@ import installationConstants from '../ui/public/conf/installationConstants';
 // spawner runs within ag-solo, so is persistent.  Once the deploy.js
 // script ends, connections to any of its objects are severed.
 
-// The deployer's wallet's petname for the tip issuer.
-const TIP_ISSUER_PETNAME = process.env.TIP_ISSUER_PETNAME || 'moola';
-
 /**
  * @typedef {Object} DeployPowers The special powers that `agoric deploy` gives us
  * @property {(path: string) => Promise<{ moduleFormat: string, source: string }>} bundleSource
@@ -81,110 +78,44 @@ export default async function deployApi(
   } = home;
 
   // To get the backend of our dapp up and running, first we need to
-  // grab the installationHandle that our contract deploy script put
+  // grab the installation that our contract deploy script put
   // in the public board.
-  const { INSTALLATION_HANDLE_BOARD_ID, CONTRACT_NAME } = installationConstants;
-  const contractInstallation = await E(board).getValue(
-    INSTALLATION_HANDLE_BOARD_ID,
-  );
+  const { INSTALLATION_BOARD_ID, CONTRACT_NAME } = installationConstants;
+  const installation = await E(board).getValue(INSTALLATION_BOARD_ID);
 
-  // Second, we can use the installationHandle to create a new
-  // instance of our contract code on Zoe. A contract instance is a running
-  // program that can take offers through Zoe. Creating a contract
-  // instance gives you an invitation to the contract. In this case, it is
-  // an admin invitation with special authority - whoever redeems this
-  // admin invitation will get all of the tips from the encouragement
-  // contract instance.
+  // Second, we can use the installation to create a new instance of
+  // our contract code on Zoe. A contract instance is a running
+  // program that can take offers through Zoe. Making an instance will
+  // give us a `creatorFacet` that will let us make invitations we can
+  // send to users.
 
-  // At the time that we make the contract instance, we need to tell
-  // Zoe what kind of token to accept as tip money. In this instance,
-  // we will only accept moola. (If we wanted to accept other kinds of
-  // tips, we could create other instances or edit the contract code
-  // and redeploy.) We need to put this information in the form of a
-  // keyword (a string that the contract determines, in this case,
-  // 'Tip') plus an issuer for the token kind, the moolaIssuer.
-
-  // In our example, moola is a widely used token that our wallet
-  // already knows about.
-
-  // getIssuers returns an array, because we currently cannot
-  // serialize maps. We can immediately create a map using the array,
-  // though. https://github.com/Agoric/agoric-sdk/issues/838
-  const issuersArray = await E(wallet).getIssuers();
-  const issuers = new Map(issuersArray);
-  const tipIssuer = issuers.get(TIP_ISSUER_PETNAME);
-
-  if (tipIssuer === undefined) {
-    console.error(
-      'Cannot find TIP_ISSUER_PETNAME',
-      TIP_ISSUER_PETNAME,
-      'in home.wallet',
-    );
-    console.error('Have issuers:', [...issuers.keys()].join(', '));
-    process.exit(1);
-  }
-
-  console.log('Installing contract');
-  const issuerKeywordRecord = harden({ Tip: tipIssuer });
-  const { creatorInvitation: adminInvitation, instance, publicFacet } = await E(
-    zoe,
-  ).startInstance(contractInstallation, issuerKeywordRecord);
+  const { creatorFacet, instance, publicFacet } = await E(zoe).startInstance(installation);
 
   console.log('- SUCCESS! contract instance is running on Zoe');
-
-  // Let's use the adminInvitation to make an offer. Note that we aren't
-  // specifying any proposal, and we aren't escrowing any assets with
-  // Zoe in this offer. We are doing this so that Zoe will eventually
-  // give us a payout of all of the tips. We can trigger this payout
-  // by calling the `complete` function on the `completeObj`.
-  console.log('Retrieving admin');
-  const adminSeat = E(zoe).offer(adminInvitation);
-  const outcomeP = E(adminSeat).getOfferResult();
-
-  // When the promise for a payout resolves, we want to deposit the
-  // payments in our purses. We will put the adminPayoutP and
-  // completeObj in our scratch location so that we can share the
-  // live objects with the shutdown.js script.
-  E(scratch).set('adminPayoutP', E(adminSeat).getPayouts());
-  E(scratch).set('adminSeat', adminSeat);
-
-  const outcome = await outcomeP;
-  console.log(`-- ${outcome}`);
 
   console.log('Retrieving Board IDs for issuers and brands');
   const invitationIssuerP = E(zoe).getInvitationIssuer();
   const invitationBrandP = E(invitationIssuerP).getBrand();
 
-  const assuranceIssuerP = E(publicFacet).getAssuranceIssuer();
-  const asurranceBrandP = E(assuranceIssuerP).getBrand();
-  const tipBrandP = E(tipIssuer).getBrand();
+  const tokenIssuer = await E(publicFacet).getTokenIssuer();
+  const tokenBrand = await E(tokenIssuerP).getBrand();
 
-  // Now that we've done all the admin work, let's share this
-  // instanceHandle by adding it to the board. Any users of our
-  // contract will use this instanceHandle to get invitations to the
-  // contract in order to make an offer.
   const invitationIssuer = await invitationIssuerP;
-  const tipBrand = await tipBrandP;
-  const assuranceIssuer = await assuranceIssuerP;
-  const assuranceBrand = await asurranceBrandP;
 
   const [
-    TIP_BRAND_BOARD_ID,
-    INSTANCE_HANDLE_BOARD_ID,
-    ASSURANCE_BRAND_BOARD_ID,
-    ASSURANCE_ISSUER_BOARD_ID,
+    INSTANCE_BOARD_ID,
+    TOKEN_BRAND_BOARD_ID,
+    TOKEN_ISSUER_BOARD_ID,
   ] = await Promise.all([
-    E(board).getId(tipBrand),
     E(board).getId(instance),
-    E(board).getId(assuranceBrand),
-    E(board).getId(assuranceIssuer),
+    E(board).getId(tokenBrand),
+    E(board).getId(tokenIssuer),
   ]);
 
   console.log(`-- Contract Name: ${CONTRACT_NAME}`);
-  console.log(`-- INSTANCE_HANDLE_BOARD_ID: ${INSTANCE_HANDLE_BOARD_ID}`);
-  console.log(`-- ASSURANCE_ISSUER_BOARD_ID: ${ASSURANCE_ISSUER_BOARD_ID}`);
-  console.log(`-- ASSURANCE_BRAND_BOARD_ID: ${ASSURANCE_BRAND_BOARD_ID}`);
-  console.log(`-- TIP_BRAND_BOARD_ID: ${TIP_BRAND_BOARD_ID}`);
+  console.log(`-- INSTANCE_BOARD_ID: ${INSTANCE_BOARD_ID}`);
+  console.log(`-- TOKEN_ISSUER_BOARD_ID: ${TOKEN_ISSUER_BOARD_ID}`);
+  console.log(`-- TOKEN_BRAND_BOARD_ID: ${TOKEN_BRAND_BOARD_ID}`);
 
   // We want the handler to run persistently. (Scripts such as this
   // deploy.js script are ephemeral and all connections to objects
@@ -239,15 +170,14 @@ export default async function deployApi(
 
   // Re-save the constants somewhere where the UI and api can find it.
   const dappConstants = {
-    INSTANCE_HANDLE_BOARD_ID,
-    INSTALLATION_HANDLE_BOARD_ID,
+    INSTANCE_BOARD_ID,
+    INSTALLATION_BOARD_ID,
     INVITE_BRAND_BOARD_ID,
     // BRIDGE_URL: 'agoric-lookup:https://local.agoric.com?append=/bridge',
     brandBoardIds: {
-      Tip: TIP_BRAND_BOARD_ID,
-      Assurance: ASSURANCE_BRAND_BOARD_ID,
+      Token: TOKEN_BRAND_BOARD_ID,
     },
-    issuerBoardIds: { Assurance: ASSURANCE_ISSUER_BOARD_ID },
+    issuerBoardIds: { Token: TOKEN_ISSUER_BOARD_ID },
     BRIDGE_URL: 'http://127.0.0.1:8000',
     API_URL,
   };

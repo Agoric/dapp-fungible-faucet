@@ -1,113 +1,60 @@
 // @ts-check
 import '@agoric/zoe/exported';
-import { makeNotifierKit } from '@agoric/notifier';
 
 /**
- * This contract provides encouragement. For a small donation it provides more.
+ * This is a very simple contract that creates a new issuer and mints payments
+ * from it, in order to give an example of how that can be done.  This contract
+ * sends new tokens to anyone who has an invitation.
+ *
+ * The expectation is that most contracts that want to do something similar
+ * would use the ability to mint new payments internally rather than sharing
+ * that ability widely as this one does.
+ *
+ * To pay others in tokens, the creator of the instance can make
+ * invitations for them, which when used to make an offer, will payout
+ * the specified amount of tokens.
  *
  * @type {ContractStartFn}
- *
  */
 const start = async zcf => {
-  let count = 0;
-  const messages = {
-    basic: `You're doing great!`,
-    premium: `Wow, just wow. I have never seen such talent!`,
-  };
-  const { notifier, updater } = makeNotifierKit(undefined);
+  // Create the internal token mint for a fungible digital asset. Note
+  // that 'Tokens' is both the keyword and the allegedName.
+  const zcfMint = await zcf.makeZCFMint('Tokens');
+  // AWAIT
 
-  const assuranceMint = await zcf.makeZCFMint('Assurance', 'set');
-  // Now ZCF has saved the issuer, brand, and local amountMath so that they
+  // Now that ZCF has saved the issuer, brand, and local amountMath, they
   // can be accessed synchronously.
-  const { amountMath: assuranceMath, issuer } = assuranceMint.getIssuerRecord();
+  const { amountMath, issuer } = zcfMint.getIssuerRecord();
 
-  const {
-    brands: { Tip: tipBrand },
-  } = zcf.getTerms();
-  const tipAmountMath = zcf.getAmountMath(tipBrand);
-
-  /** @type {ZCFSeat} */
-  let creatorSeat;
-
-  const updateNotification = () => {
-    updater.updateState({ messages, count });
-  };
-  updateNotification();
-
-  /** @type {OfferHandler} */
-  const create = seat => {
-    creatorSeat = seat;
-    return `creator invitation redeemed`;
-  };
-
-  /** @type {(nickname?: string) => OfferHandler} */
-  const makeEncourager = (nickname = undefined) => seat => {
-    if (!nickname) {
-      nickname = 'friend';
-    }
-
-    // if the creatorSeat is no longer active (i.e. the creator exited
-    // their seat and retrieved their tips), we just don't give any
-    // encouragement.
-    if (creatorSeat.hasExited()) {
-      throw seat.kickOut(
-        new Error(`Sorry, ${nickname}, we are no longer giving encouragement`),
-      );
-    }
-
-    let encouragement = messages.basic;
-
-    const tipAmount = seat.getAmountAllocated('Tip', tipBrand);
-    if (tipAmountMath.isGTE(tipAmount, tipAmountMath.make(1))) {
-      // if the user gives a tip, we provide a premium encouragement message
-      encouragement = messages.premium;
-
-      // Create a non-fungible serial number for the new assurance
-      const assuranceAmount = assuranceMath.make(harden([count + 1]));
-      assuranceMint.mintGains({ Assurance: assuranceAmount }, creatorSeat);
-
-      const userStage = seat.stage({
-        Tip: tipAmountMath.getEmpty(),
-        Assurance: assuranceAmount,
-      });
-
-      // reallocate the tip to the creatorSeat
-      const creatorTips = creatorSeat.getAmountAllocated('Tip', tipBrand);
-      const creatorStage = creatorSeat.stage({
-        Tip: tipAmountMath.add(creatorTips, tipAmount),
-        Assurance: assuranceMath.getEmpty(),
-      });
-
-      zcf.reallocate(creatorStage, userStage);
-    }
+  const mintPayment = extent => seat => {
+    const amount = amountMath.make(extent);
+    // Synchronously mint and allocate amount to seat.
+    zcfMint.mintGains({ Token: amount }, seat);
+    // Exit the seat so that the user gets a payout.
     seat.exit();
-    count += 1;
-    updateNotification();
-    return `Hey, ${nickname}!  ${encouragement}`;
+    // Since the user is getting the payout through Zoe, we can
+    // return anything here. Let's return some helpful instructions.
+    return 'Offer completed. You should receive a payment from Zoe';
+  };
+
+  const creatorFacet = {
+    // The creator of the instance can send invitations to anyone
+    // they wish to.
+    makeInvitation: (extent = 1000) =>
+      zcf.makeInvitation(mintPayment(extent), 'mint a payment'),
+    getTokenIssuer: () => issuer,
   };
 
   const publicFacet = {
-    makeInvitation(nickname = undefined) {
-      return zcf.makeInvitation(makeEncourager(nickname), 'encouragement');
-    },
-    getFreeEncouragement(nickname = undefined) {
-      if (!nickname) {
-        nickname = 'friend';
-      }
-      count += 1;
-      updateNotification();
-      return `Hey, ${nickname}!  ${messages.basic}`;
-    },
-    getAssuranceIssuer() {
-      return issuer;
-    },
-    getNotifier() {
-      return notifier;
-    },
+    // Make the token issuer public. Note that only the mint can
+    // make new digital assets. The issuer is ok to make public.
+    getTokenIssuer: () => issuer,
   };
 
-  const creatorInvitation = zcf.makeInvitation(create, 'creator');
-  return harden({ creatorInvitation, publicFacet });
+  // Return the creatorFacet to the creator, so they can make
+  // invitations for others to get payments of tokens. Publish the
+  // publicFacet.
+  return harden({ creatorFacet, publicFacet });
 };
 
 harden(start);

@@ -1,4 +1,4 @@
-# Encouragement Dapp
+# Faucet Dapp
 
 TL;DR:
 ```sh
