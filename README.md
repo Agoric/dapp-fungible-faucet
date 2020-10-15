@@ -5,7 +5,12 @@ TL;DR:
 The Fungible Faucet Dapp sends tokens to a user's wallet when they
 click the "Mint Fungible Tokens" button.
 
+Install the [prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric.html).
+
 ```sh
+# With the prerequisites installed, in the directory where you want to put your dapp:
+agoric init --dapp-template dapp-fungible-faucet my-fungible-faucet
+cd my-fungible-faucet
 # Start the Agoric platform
 agoric install && agoric start --reset
 # In another terminal, deploy this contract
