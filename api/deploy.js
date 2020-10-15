@@ -3,7 +3,6 @@
 
 import fs from 'fs';
 import { E } from '@agoric/eventual-send';
-import harden from '@agoric/harden';
 import '@agoric/zoe/exported';
 
 import installationConstants from '../ui/public/conf/installationConstants';
@@ -36,7 +35,7 @@ const API_PORT = process.env.API_PORT || '8000';
  */
 export default async function deployApi(
   homePromise,
-  { bundleSource, pathResolve, installUnsafePlugin },
+  { bundleSource, pathResolve },
 ) {
   // Let's wait for the promise to resolve.
   const home = await homePromise;
@@ -44,15 +43,6 @@ export default async function deployApi(
   // Unpack the references.
   const {
     // *** LOCAL REFERENCES ***
-
-    // This wallet only exists on this machine, and only you have
-    // access to it. The wallet stores purses and handles transactions.
-    wallet,
-
-    // Scratch is a map only on this machine, and can be used for
-    // communication in objects between processes/scripts on this
-    // machine.
-    uploads: scratch,
 
     // The spawner persistently runs scripts within ag-solo, off-chain.
     spawner,
@@ -89,7 +79,9 @@ export default async function deployApi(
   // give us a `creatorFacet` that will let us make invitations we can
   // send to users.
 
-  const { creatorFacet, instance, publicFacet } = await E(zoe).startInstance(installation);
+  const { creatorFacet, instance, publicFacet } = await E(zoe).startInstance(
+    installation,
+  );
 
   console.log('- SUCCESS! contract instance is running on Zoe');
 
@@ -98,7 +90,7 @@ export default async function deployApi(
   const invitationBrandP = E(invitationIssuerP).getBrand();
 
   const tokenIssuer = await E(publicFacet).getTokenIssuer();
-  const tokenBrand = await E(tokenIssuerP).getBrand();
+  const tokenBrand = await E(tokenIssuer).getBrand();
 
   const invitationIssuer = await invitationIssuerP;
 
@@ -133,35 +125,14 @@ export default async function deployApi(
 
     // Spawn the running code
     const handler = E(handlerInstall).spawn({
-      publicFacet,
+      creatorFacet,
       board,
-      http,
       invitationIssuer,
     });
     await E(http).registerAPIHandler(handler);
   };
 
-  const installPluginServer = async () => {
-    // To run the API persistently, we ask the agoric deploy command to install an
-    // HTTP server plugin into the running ag-solo, and give it access to the
-    // publicFacet and other capabilities.
-    //
-    // The function is named installUnsafePlugin because, unlike any vat or
-    // contract, the plugin will get full access to the OS-level account in which
-    // the ag-solo is running.
-
-    await installUnsafePlugin('./src/server.js', {
-      port: API_PORT,
-      host: API_HOST,
-      CONTRACT_NAME,
-      publicFacet,
-      board,
-      invitationIssuer,
-    });
-  };
-
-  const installer = API_PORT === '8000' ? installHandler : installPluginServer;
-  await installer();
+  await installHandler();
 
   const invitationBrand = await invitationBrandP;
   const INVITE_BRAND_BOARD_ID = await E(board).getId(invitationBrand);
