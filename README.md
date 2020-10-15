@@ -1,4 +1,4 @@
-# Faucet Dapp
+# Faucet Faucet Dapp
 
 TL;DR:
 ```sh

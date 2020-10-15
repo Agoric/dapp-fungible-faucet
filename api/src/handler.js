@@ -43,7 +43,7 @@ const makeLegacyCommandHandler = ({
       async onMessage(obj, { _channelHandle }) {
         // These are messages we receive from either POST or WebSocket.
         switch (obj.type) {
-          case 'faucet/sendInvitation': {
+          case 'fungibleFaucet/sendInvitation': {
             const { depositFacetId, offer } = obj.data;
             const depositFacet = E(board).getValue(depositFacetId);
             const invitation = await E(creatorFacet).makeInvitation();
@@ -62,7 +62,7 @@ const makeLegacyCommandHandler = ({
             await E(depositFacet).receive(invitation);
 
             return harden({
-              type: 'faucet/sendInvitationResponse',
+              type: 'fungibleFaucet/sendInvitationResponse',
               data: { offer: updatedOffer },
             });
           }

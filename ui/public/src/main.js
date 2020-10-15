@@ -2,7 +2,6 @@
 import 'regenerator-runtime/runtime';
 import dappConstants from '../lib/constants.js';
 import { connect } from './connect.js';
-import { walletUpdatePurses, flipSelectedBrands } from './wallet.js';
 
 const { 
   INVITE_BRAND_BOARD_ID, 
@@ -33,7 +32,7 @@ export default async function main() {
    */
   const apiRecv = obj => {
     switch (obj.type) {
-      case 'faucet/sendInvitationResponse': {
+      case 'fungibleFaucet/sendInvitationResponse': {
         // Once the invitation has been sent to the user, we update the
         // offer to include the invitationBoardId. Then we make a
         // request to the user's wallet to send the proposed offer for
@@ -53,7 +52,7 @@ export default async function main() {
   // All the "suggest" messages below are backward-compatible:
   // the new wallet will confirm them with the user, but the old
   // wallet will just ignore the messages and allow access immediately.
-  const walletSend = await connect('wallet', walletRecv, '?suggestedDappPetname=Faucet').then(walletSend => {
+  const walletSend = await connect('wallet', walletRecv, '?suggestedDappPetname=FungibleFaucet').then(walletSend => {
     walletSend({ type: 'walletGetPurses'});
     walletSend({ type: 'walletGetDepositFacetId', brandBoardId: INVITE_BRAND_BOARD_ID });
     walletSend({
@@ -76,16 +75,22 @@ export default async function main() {
 
   const apiSend = await connect('api', apiRecv).then(apiSend => {
     $mintFungible.removeAttribute('disabled');
-    console.log('removed Attribute');
     $mintFungible.addEventListener('click', () => {
         const offer = {
           // JSONable ID for this offer.  This is scoped to the origin.
           id: Date.now(),
       
-          proposalTemplate: {},
+          proposalTemplate: {
+            want: {
+              Token: {
+                pursePetname: ["FungibleFaucet","Token"],
+                value: 1000,
+              },
+            },
+          },
         };
         apiSend({
-          type: 'faucet/sendInvitation',
+          type: 'fungibleFaucet/sendInvitation',
           data: {
             depositFacetId: zoeInvitationDepositFacetId,
             offer,
