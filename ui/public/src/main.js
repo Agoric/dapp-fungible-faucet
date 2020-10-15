@@ -3,23 +3,20 @@ import 'regenerator-runtime/runtime';
 import dappConstants from '../lib/constants.js';
 import { connect } from './connect.js';
 
-const { 
-  INVITE_BRAND_BOARD_ID, 
-  INSTANCE_BOARD_ID, 
+const {
+  INVITE_BRAND_BOARD_ID,
+  INSTANCE_BOARD_ID,
   INSTALLATION_BOARD_ID,
-  issuerBoardIds: {
-    Token: TOKEN_ISSUER_BOARD_ID,
-  },
+  issuerBoardIds: { Token: TOKEN_ISSUER_BOARD_ID },
 } = dappConstants;
-
 
 export default async function main() {
   let zoeInvitationDepositFacetId;
-  
+
   /**
    * @param {{ type: string; data: any; walletURL: string }} obj
    */
-  const walletRecv = obj => {
+  const walletRecv = (obj) => {
     switch (obj.type) {
       case 'walletDepositFacetIdResponse': {
         zoeInvitationDepositFacetId = obj.data;
@@ -30,7 +27,7 @@ export default async function main() {
   /**
    * @param {{ type: string; data: any; }} obj
    */
-  const apiRecv = obj => {
+  const apiRecv = (obj) => {
     switch (obj.type) {
       case 'fungibleFaucet/sendInvitationResponse': {
         // Once the invitation has been sent to the user, we update the
@@ -47,14 +44,23 @@ export default async function main() {
     }
   };
 
-  const $mintFungible = /** @type {HTMLInputElement} */ (document.getElementById('mintFungible'));
-  
+  const $mintFungible = /** @type {HTMLInputElement} */ (document.getElementById(
+    'mintFungible',
+  ));
+
   // All the "suggest" messages below are backward-compatible:
   // the new wallet will confirm them with the user, but the old
   // wallet will just ignore the messages and allow access immediately.
-  const walletSend = await connect('wallet', walletRecv, '?suggestedDappPetname=FungibleFaucet').then(walletSend => {
-    walletSend({ type: 'walletGetPurses'});
-    walletSend({ type: 'walletGetDepositFacetId', brandBoardId: INVITE_BRAND_BOARD_ID });
+  const walletSend = await connect(
+    'wallet',
+    walletRecv,
+    '?suggestedDappPetname=FungibleFaucet',
+  ).then((walletSend) => {
+    walletSend({ type: 'walletGetPurses' });
+    walletSend({
+      type: 'walletGetDepositFacetId',
+      brandBoardId: INVITE_BRAND_BOARD_ID,
+    });
     walletSend({
       type: 'walletSuggestInstallation',
       petname: 'Installation',
@@ -73,31 +79,31 @@ export default async function main() {
     return walletSend;
   });
 
-  const apiSend = await connect('api', apiRecv).then(apiSend => {
+  const apiSend = await connect('api', apiRecv).then((apiSend) => {
     $mintFungible.removeAttribute('disabled');
     $mintFungible.addEventListener('click', () => {
-        const offer = {
-          // JSONable ID for this offer.  This is scoped to the origin.
-          id: Date.now(),
-      
-          proposalTemplate: {
-            want: {
-              Token: {
-                pursePetname: ["FungibleFaucet","Token"],
-                value: 1000,
-              },
+      const offer = {
+        // JSONable ID for this offer.  This is scoped to the origin.
+        id: Date.now(),
+
+        proposalTemplate: {
+          want: {
+            Token: {
+              pursePetname: ['FungibleFaucet', 'Token'],
+              value: 1000,
             },
           },
-        };
-        apiSend({
-          type: 'fungibleFaucet/sendInvitation',
-          data: {
-            depositFacetId: zoeInvitationDepositFacetId,
-            offer,
-          },
-        });
+        },
+      };
+      apiSend({
+        type: 'fungibleFaucet/sendInvitation',
+        data: {
+          depositFacetId: zoeInvitationDepositFacetId,
+          offer,
+        },
+      });
     });
-    
+
     return apiSend;
   });
 }

@@ -16,7 +16,7 @@ import '@agoric/zoe/exported';
  *
  * @type {ContractStartFn}
  */
-const start = async zcf => {
+const start = async (zcf) => {
   // Create the internal token mint for a fungible digital asset. Note
   // that 'Tokens' is both the keyword and the allegedName.
   const zcfMint = await zcf.makeZCFMint('Tokens');
@@ -26,7 +26,7 @@ const start = async zcf => {
   // can be accessed synchronously.
   const { amountMath, issuer } = zcfMint.getIssuerRecord();
 
-  const mintPayment = extent => seat => {
+  const mintPayment = (extent) => (seat) => {
     const amount = amountMath.make(extent);
     // Synchronously mint and allocate amount to seat.
     zcfMint.mintGains({ Token: amount }, seat);

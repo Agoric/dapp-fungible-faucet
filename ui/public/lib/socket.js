@@ -50,12 +50,12 @@ export async function rpc(req, endpoint) {
   }
 
   let resolve;
-  const p = new Promise(res => {
+  const p = new Promise((res) => {
     resolve = res;
   });
   socket.send(req);
   const expectedResponse = `${req.type}Response`;
-  
+
   /**
    * @param {{ type: string; }} obj
    */

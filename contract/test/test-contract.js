@@ -14,7 +14,7 @@ import { makeLocalAmountMath } from '@agoric/ertp';
 
 const contractPath = `${__dirname}/../src/contract`;
 
-test('zoe - mint payments', async t => {
+test('zoe - mint payments', async (t) => {
   const zoe = makeZoe(makeFakeVatAdmin().admin);
 
   // pack the contract
@@ -44,5 +44,4 @@ test('zoe - mint payments', async t => {
 
   // Bob got 1000 tokens
   t.deepEqual(tokenPayoutAmount, tokens1000);
-
 });

@@ -20,17 +20,22 @@ let initializedIframe = false;
 
 /**
  * Make a new wallet bridge "socket", via postMessage to an iframe.
- * 
+ *
  * @param {SocketHandler} handler
  */
-function createSocket({ onConnect, onDisconnect, onMessage }, endpoint = '/private/wallet-bridge') {
-  let ifr = /** @type {HTMLIFrameElement} */ (document.getElementById(walletBridgeId));
+function createSocket(
+  { onConnect, onDisconnect, onMessage },
+  endpoint = '/private/wallet-bridge',
+) {
+  let ifr = /** @type {HTMLIFrameElement} */ (document.getElementById(
+    walletBridgeId,
+  ));
   if (!ifr) {
     ifr = document.querySelector(`#${walletBridgeId}`);
   }
   if (!initializedIframe) {
     initializedIframe = true;
-    window.addEventListener('message', ev => {
+    window.addEventListener('message', (ev) => {
       // console.log('dapp ui got', ev);
       if (ev.data && ev.data.type === 'walletBridgeLoaded') {
         walletLoaded = true;
@@ -48,7 +53,7 @@ function createSocket({ onConnect, onDisconnect, onMessage }, endpoint = '/priva
   }
 
   let ifrQueue = [];
-  const flushQueue =  () => {
+  const flushQueue = () => {
     const q = ifrQueue;
     ifrQueue = undefined;
     ifr.removeEventListener('load', flushQueue);
@@ -97,11 +102,13 @@ function createSocket({ onConnect, onDisconnect, onMessage }, endpoint = '/priva
       for (const sub of messageListeners.keys()) {
         messageSubscriptions.delete(sub);
       }
-      let ifr = /** @type {HTMLIFrameElement} */ (document.getElementById(walletBridgeId));
+      const ifr = /** @type {HTMLIFrameElement} */ (document.getElementById(
+        walletBridgeId,
+      ));
       if (ifr) {
         ifr.src = '';
       }
-  
+
       if (onDisconnect) {
         onDisconnect();
       }
@@ -119,11 +126,14 @@ function createSocket({ onConnect, onDisconnect, onMessage }, endpoint = '/priva
 
 /**
  * Start a given socket connection.
- * 
- * @param {SocketHandler} socketListeners 
- * @param {*} endpoint 
+ *
+ * @param {SocketHandler} socketListeners
+ * @param {*} endpoint
  */
-export function activateSocket(socketListeners = {}, endpoint = '/private/wallet-bridge') {
+export function activateSocket(
+  socketListeners = {},
+  endpoint = '/private/wallet-bridge',
+) {
   if (getActiveSocket(endpoint)) return;
   createSocket(socketListeners, endpoint);
 }

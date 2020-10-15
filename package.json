@@ -25,9 +25,7 @@
   },
   "scripts": {
     "preinstall": "node -e \"process.env.AGORIC_INSTALL && process.exit(0); console.warn('please use: agoric install . For details, see https://agoric.com/documentation/'); process.exit(1)\"",
-    "OFF-clean": "yarn workspaces run clean",
-    "prettier": "yarn workspaces run prettier",
-    "lint-fix": "yarn workspaces run lint-fix",
+    "lint": "yarn workspaces run lint-fix",
     "lint-check": "yarn workspaces run lint-check",
     "test": "yarn workspaces run test",
     "build": "yarn workspaces run build"
@@ -37,5 +35,14 @@
     "agoric": "*",
     "babel-eslint": ">=11.0.0-beta.2",
     "eslint-plugin-eslint-comments": "^3.1.2"
+  },
+  "prettier": {
+      "trailingComma": "all",
+      "singleQuote": true,
+      "overrides": [
+        {
+          "files": ["*.js", "*.cjs", "*.mjs"]
+        }
+      ]
   }
 }

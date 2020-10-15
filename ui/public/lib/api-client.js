@@ -27,9 +27,9 @@ const handlerToListener = new Map();
 
 /**
  * Make a new socket to the API handler.
- * 
+ *
  * @param {SocketHandler} handler
- * @param {string} endpoint 
+ * @param {string} endpoint
  */
 function createSocket({ onConnect, onDisconnect, onMessage }, endpoint) {
   const socket = new WebSocket(getWebSocketEndpoint(endpoint));
@@ -58,15 +58,17 @@ function createSocket({ onConnect, onDisconnect, onMessage }, endpoint) {
     socket.addEventListener('close', () => onDisconnect());
   }
   if (onMessage) {
-    socket.addEventListener('message', ({ data }) => onMessage(JSON.parse(data)));
+    socket.addEventListener('message', ({ data }) =>
+      onMessage(JSON.parse(data)),
+    );
   }
 }
 
 /**
  * Start a given socket connection.
- * 
- * @param {SocketHandler} socketListeners 
- * @param {*} endpoint 
+ *
+ * @param {SocketHandler} socketListeners
+ * @param {*} endpoint
  */
 export function activateSocket(socketListeners = {}, endpoint = '/api') {
   if (getActiveSocket(endpoint)) return;
@@ -86,7 +88,7 @@ export async function rpc(req, endpoint = '/api') {
   }
 
   let resolve;
-  const p = new Promise(res => {
+  const p = new Promise((res) => {
     resolve = res;
   });
   socket.send(req);
