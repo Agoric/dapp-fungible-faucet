@@ -1,9 +1,9 @@
 // @ts-check
 /* globals window, WebSocket */
 
-import { registerSocket, closeSocket, getActiveSocket } from './socket.js';
+import { registerSocket, closeSocket, getActiveSocket } from './socket';
 
-import dappConstants from './constants.js';
+import dappConstants from './constants';
 
 const { API_URL } = dappConstants;
 

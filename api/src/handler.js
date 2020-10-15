@@ -1,5 +1,4 @@
 // @ts-check
-import harden from '@agoric/harden';
 import { E } from '@agoric/eventual-send';
 
 const spawnHandler = (

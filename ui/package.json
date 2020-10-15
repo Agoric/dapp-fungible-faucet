@@ -60,6 +60,9 @@
       "import/no-extraneous-dependencies": "off"
     }
   },
+  "eslintIgnore": [
+    "dist/"
+  ],
   "staticFiles": {
     "staticPath": [
       {
@@ -92,7 +95,11 @@
     "singleQuote": true,
     "overrides": [
       {
-        "files": ["*.js", "*.cjs", "*.mjs"]
+        "files": [
+          "*.js",
+          "*.cjs",
+          "*.mjs"
+        ]
       }
     ]
   }

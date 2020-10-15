@@ -1,7 +1,7 @@
 // @ts-check
-/* globals window, WebSocket */
+/* globals window document */
 
-import { registerSocket, getActiveSocket, closeSocket } from './socket.js';
+import { registerSocket, getActiveSocket, closeSocket } from './socket';
 
 // Wallet bridge
 
@@ -102,7 +102,7 @@ function createSocket(
       for (const sub of messageListeners.keys()) {
         messageSubscriptions.delete(sub);
       }
-      const ifr = /** @type {HTMLIFrameElement} */ (document.getElementById(
+      ifr = /** @type {HTMLIFrameElement} */ (document.getElementById(
         walletBridgeId,
       ));
       if (ifr) {

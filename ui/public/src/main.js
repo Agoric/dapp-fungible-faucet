@@ -1,7 +1,9 @@
 // @ts-check
+/* globals document */
 import 'regenerator-runtime/runtime';
-import dappConstants from '../lib/constants.js';
-import { connect } from './connect.js';
+import { assert, details } from '@agoric/assert';
+import dappConstants from '../lib/constants';
+import { connect } from './connect';
 
 const {
   INVITE_BRAND_BOARD_ID,
@@ -20,6 +22,10 @@ export default async function main() {
     switch (obj.type) {
       case 'walletDepositFacetIdResponse': {
         zoeInvitationDepositFacetId = obj.data;
+        break;
+      }
+      default: {
+        assert.fail(details`unexpected obj.type ${obj.type}`);
       }
     }
   };
@@ -35,11 +41,15 @@ export default async function main() {
         // request to the user's wallet to send the proposed offer for
         // acceptance/rejection.
         const { offer } = obj.data;
+        // eslint-disable-next-line no-use-before-define
         walletSend({
           type: 'walletAddOffer',
           data: offer,
         });
         break;
+      }
+      default: {
+        assert.fail(details`unexpected obj.type ${obj.type}`);
       }
     }
   };
@@ -55,6 +65,7 @@ export default async function main() {
     'wallet',
     walletRecv,
     '?suggestedDappPetname=FungibleFaucet',
+    // eslint-disable-next-line no-shadow
   ).then((walletSend) => {
     walletSend({ type: 'walletGetPurses' });
     walletSend({
@@ -79,7 +90,7 @@ export default async function main() {
     return walletSend;
   });
 
-  const apiSend = await connect('api', apiRecv).then((apiSend) => {
+  await connect('api', apiRecv).then((apiSend) => {
     $mintFungible.removeAttribute('disabled');
     $mintFungible.addEventListener('click', () => {
       const offer = {
