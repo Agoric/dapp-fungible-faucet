@@ -3,9 +3,8 @@
 import dappConstants from '../lib/constants.js';
 import { implode } from '../lib/implode.js';
 
-// TODO: Allow multiple brands for tipping.
-const { Tip: tipBrandBoardId, Assurance: assuranceBrandBoardId } = dappConstants.brandBoardIds;
-const allowedBrandBoardIds = [tipBrandBoardId];
+const { Token: tokenBrandBoardId } = dappConstants.brandBoardIds;
+const allowedBrandBoardIds = [tokenBrandBoardId];
 
 /**
  * @typedef {Object.<string, HTMLOptionElement>} Purse
@@ -14,16 +13,6 @@ const allowedBrandBoardIds = [tipBrandBoardId];
  * @property {any} value
  * @property {string} brandBoardId
  */
-
-/**
- * @type {Purse[]}
- */
-const tipPurses = [];
-
-/**
- * @type {Purse[]}
- */
-const tipIssuers = [];
 
 /**
  * @type {Purse[]}
@@ -164,17 +153,11 @@ export function walletUpdatePurses(purses, selects) {
   ).sort(({ pursePetname: a }, { pursePetname: b }) => cmp(a, b));
 
   intoPurses = purses.filter(
-    ({ brandBoardId }) => brandBoardId === assuranceBrandBoardId,
+    ({ brandBoardId }) => brandBoardId === tokenBrandBoardId,
   ).sort(({ pursePetname: a }, { pursePetname: b }) => cmp(a, b));
 
   const newPurses = intoPurses.sort(({ pursePetname: a }, { pursePetname: b}) =>
     cmp(a, b));
-
-  const newIssuers = allPurses.sort(({ brandPetname: a }, { brandPetname: b }) =>
-    cmp(a, b));
-
-  // Enable the purse list.
-  updateOptions('brandPetname', tipIssuers, newIssuers, ['$brands'], selects);
 
   flipSelectedBrands(selects);
 
@@ -188,29 +171,4 @@ export function walletUpdatePurses(purses, selects) {
   );
 }
 
-/**
- * @param {Object.<string, HTMLSelectElement>} selects
- */
-export function flipSelectedBrands(selects) {
-  let i = 0;
-  const selectedPetname = selects.$brands.value;
-  while (i < tipPurses.length) {
-    const purse = tipPurses[i];
-    if (implode(purse.brandPetname) !== selectedPetname) {
-      // Remove the purse.
-      selects.$tipPurse.removeChild(purse.$tipPurse);
-      delete purse.$tipPurse;
-      tipPurses.splice(i, 1);
-    } else {
-      i += 1;
-    }
-  }
 
-  updateOptions(
-    'pursePetname',
-    tipPurses,
-    allPurses.filter(({ brandPetname }) => implode(brandPetname) === selectedPetname),
-    ['$tipPurse'],
-    selects,
-  );
-}
