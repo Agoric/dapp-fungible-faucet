@@ -1,6 +1,10 @@
-# Faucet Faucet Dapp
+# Fungible Faucet Dapp
 
 TL;DR:
+
+The Fungible Faucet Dapp sends tokens to a user's wallet when they
+click the "Mint Fungible Tokens" button.
+
 ```sh
 # Start the Agoric platform
 agoric install && agoric start --reset
@@ -26,12 +30,32 @@ blockchain. It does not currently deploy or connect to the Agoric testnet.
 This particular dapp UI is written in vanilla JS for simplicity (as
 opposed to using a framework).
 
-## Functionality
+## Using the Dapp
 
-The Fungible Faucet Dapp:
+1. Navigate to http://localhost:3000/.
+2. Enter `agoric open` in your terminal
+3. A window for your wallet should open.
+4. Under "Dapps" in the wallet, enable the FungibleFaucet Dapp:
 
-1. Accesses the user's Agoric wallet
-2. At the user's request, mints new Tokens and sends them to the user's wallet.
+![Enable Dapp](./readme-assets/enable-dapp.png)
+
+5. Back on the Fungible Faucet page, click the "Mint Fungible Tokens" button.
+
+![Mint Fungible Tokens](./readme-assets/mint-button.png)
+
+6. Go back to your wallet and approve the offer stating that you want
+   1000 tokens. 
+
+![Mint Fungible Tokens](./readme-assets/approve-offer.png) 
+
+7. Once the offer has been approved, your wallet makes an offer to Zoe
+   on your behalf, giving you tokens from the `mintPayments` contract.
+   You will receive a message that the offer was successful and should
+   see the tokens in your purses.
+
+![Offer Completed](./readme-assets/offer-completed.png) 
+
+![Tokens Received](./readme-assets/tokens-received.png) 
 
 To learn more about how to build Agoric Dapps, please see the [Dapp Guide](https://agoric.com/documentation/dapps/).
 
