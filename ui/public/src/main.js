@@ -1,7 +1,6 @@
 // @ts-check
 /* globals document */
 import 'regenerator-runtime/runtime';
-import { assert, details } from '@agoric/assert';
 import dappConstants from '../lib/constants';
 import { connect } from './connect';
 
@@ -24,8 +23,16 @@ export default async function main() {
         zoeInvitationDepositFacetId = obj.data;
         break;
       }
+      case 'walletNeedDappApproval': {
+        // TODO: toast with message: "Please approve the FungibleFaucet dapp in your wallet"
+        break;
+      }
+      case 'walletURL': {
+        // TODO: handle appropriately
+        break;
+      }
       default: {
-        assert.fail(details`unexpected obj.type ${obj.type}`);
+        throw Error(`unexpected walletRecv obj.type ${obj.type}`);
       }
     }
   };
@@ -49,7 +56,7 @@ export default async function main() {
         break;
       }
       default: {
-        assert.fail(details`unexpected obj.type ${obj.type}`);
+        throw Error(`unexpected apiRecv obj.type ${obj.type}`);
       }
     }
   };
