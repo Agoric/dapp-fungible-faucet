@@ -1,5 +1,5 @@
 {
-  "name": "fungible-faucet-agservers",
+  "name": "dapp-fungible-faucet-agservers",
   "version": "0.0.1",
   "description": "Agoric server instances for dapp",
   "private": true,
