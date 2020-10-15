@@ -79,6 +79,7 @@ export default async function deployContract(
     CONTRACT_NAME,
     INSTALLATION_BOARD_ID,
   };
+  const defaultsFolder = pathResolve(`../ui/public/conf`);
   const defaultsFile = pathResolve(
     `../ui/public/conf/installationConstants.js`,
   );
@@ -87,5 +88,6 @@ export default async function deployContract(
 // GENERATED FROM ${pathResolve('./deploy.js')}
 export default ${JSON.stringify(dappConstants, undefined, 2)};
 `;
+  await fs.promises.mkdir(defaultsFolder, { recursive: true });
   await fs.promises.writeFile(defaultsFile, defaultsContents);
 }
