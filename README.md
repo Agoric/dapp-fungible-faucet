@@ -12,8 +12,10 @@ agoric install && agoric start --reset
 agoric deploy contract/deploy.js
 # Start the API server
 agoric deploy api/deploy.js
+# In another terminal, navigate to the ui directory and start a local server
+cd ui && yarn start
 ```
-Then navigate to http://localhost:3000/.
+Then navigate to http://127.0.0.1:3000.
 
 The Fungible Faucet Dapp is the simplest [Agoric
 Dapp](https://agoric.com/documentation/dapps/). It
