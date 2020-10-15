@@ -1,5 +1,5 @@
 {
-  "name": "fungible-faucet-contract",
+  "name": "dapp-fungible-faucet-contract",
   "version": "0.1.0",
   "private": true,
   "description": "Contract for the Agoric Dapp",
