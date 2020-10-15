@@ -39,7 +39,7 @@ opposed to using a framework).
 
 ## Using the Dapp
 
-1. Navigate to http://localhost:3000/.
+1. Navigate to http://127.0.0.1:3000.
 2. Enter `agoric open` in your terminal
 3. A window for your wallet should open.
 4. Under "Dapps" in the wallet, enable the FungibleFaucet Dapp:
