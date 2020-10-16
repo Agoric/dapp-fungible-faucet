@@ -32,7 +32,7 @@ export const makeWebSocketHandler = (http, makeConnectionHandler) => {
             connHandler.onOpen(obj);
           }
         },
-        onClose(_obj, { channelHandle }) {
+        onClose(obj, { channelHandle }) {
           const connHandler = channelToConnHandler.get(channelHandle);
           channelToConnHandler.delete(channelHandle);
           if (connHandler.onClose) {
