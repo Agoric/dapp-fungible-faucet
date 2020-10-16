@@ -112,9 +112,9 @@ export default async function deployApi(
   // deploy.js script are ephemeral and all connections to objects
   // within this script are severed when the script is done running.)
 
-  const installHandler = async () => {
-    // To run the open handler persistently, we must use the spawner to run
-    // the code on this machine even when the script is done running.
+  const installURLHandler = async () => {
+    // To run the URL handler persistently, we must use the spawner to run
+    // the code on our ag-solo even after the deploy script exits.
 
     // Bundle up the handler code
     const bundle = await bundleSource(pathResolve('./src/handler.js'));
@@ -122,16 +122,19 @@ export default async function deployApi(
     // Install it on the spawner
     const handlerInstall = E(spawner).install(bundle);
 
-    // Spawn the running code
+    // Spawn the installed code to create an URL handler.
     const handler = E(handlerInstall).spawn({
       creatorFacet,
       board,
       invitationIssuer,
     });
+
+    // Have our ag-solo wait on ws://localhost:8000/api/fungible-faucet for
+    // websocket connections.
     await E(http).registerURLHandler(handler, '/api/fungible-faucet');
   };
 
-  await installHandler();
+  await installURLHandler();
 
   const invitationBrand = await invitationBrandP;
   const INVITE_BRAND_BOARD_ID = await E(board).getId(invitationBrand);
