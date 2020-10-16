@@ -1,5 +1,5 @@
 // @ts-check
-/* globals document */
+/* globals document mdc */
 import 'regenerator-runtime/runtime';
 import dappConstants from '../lib/constants';
 import { connect } from './connect';
@@ -14,6 +14,26 @@ const {
 export default async function main() {
   let zoeInvitationDepositFacetId;
 
+  const approveOfferSB = mdc.snackbar.MDCSnackbar.attachTo(
+    document.querySelector('#approve-offer'),
+  );
+
+  // The snackbar to approve the offer will be closed by code not timeout.
+  approveOfferSB.timeoutMs = -1;
+
+  const gotPaymentSB = mdc.snackbar.MDCSnackbar.attachTo(
+    document.querySelector('#got-payment'),
+  );
+
+  const approveDappDialog = mdc.dialog.MDCDialog.attachTo(
+    document.querySelector('#open-wallet'),
+  );
+
+  // eslint-disable-next-line no-unused-vars
+  const debugSwitch = new mdc.switchControl.MDCSwitch(
+    document.querySelector('.mdc-switch'),
+  );
+
   /**
    * @param {{ type: string; data: any; walletURL: string }} obj
    */
@@ -24,11 +44,39 @@ export default async function main() {
         break;
       }
       case 'walletNeedDappApproval': {
-        // TODO: toast with message: "Please approve the FungibleFaucet dapp in your wallet"
+        approveDappDialog.open();
         break;
       }
       case 'walletURL': {
         // TODO: handle appropriately
+        break;
+      }
+      case 'walletUpdatePurses': {
+        // TODO: handle appropriately
+        break;
+      }
+      case 'walletSuggestIssuerResponse': {
+        // TODO: handle appropriately
+        break;
+      }
+      case 'walletSuggestInstallationResponse': {
+        // TODO: handle appropriately
+        break;
+      }
+      case 'walletSuggestInstanceResponse': {
+        // TODO: handle appropriately
+        break;
+      }
+      case 'walletOfferAdded': {
+        approveOfferSB.open();
+        break;
+      }
+      case 'walletOfferHandled': {
+        approveOfferSB.close();
+        break;
+      }
+      case 'walletOfferResult': {
+        gotPaymentSB.open();
         break;
       }
       default: {
@@ -53,6 +101,10 @@ export default async function main() {
           type: 'walletAddOffer',
           data: offer,
         });
+        break;
+      }
+      case 'CTP_DISCONNECT': {
+        // TODO: handle this appropriately
         break;
       }
       default: {

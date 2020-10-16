@@ -7,26 +7,33 @@ html, body {
   margin: 0;
 }
 
-body {
+#walletBridgeIFrame {
+  display: none;
+}
+
+.grid {
+  padding-top: 30px;
+}
+
+.mint-card__primary, .mint-card__secondary {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.mint-card__secondary {
+  padding-bottom: 20px;
+}
+
+#enable-dapp {
+  padding-top: 20px;
+}
+
+#debug-mode {
   padding: 20px;
 }
 
-#walletBridgeIFrame {
-  padding: 0;
-  margin: 0;
-  border: 0;
-  display: inline-block;
-  vertical-align: top;
-}
-
-div {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-#instructions {
-  width: 800px;
+.mdc-layout-grid__inner {
+  padding-top: 20px;
 }
 
 .messages {
@@ -34,6 +41,8 @@ div {
   flex-direction: column;
   overflow: hidden;
   width: 100%;
+  font-family: monospace;
+  padding-top: 20px;
 }
 
 .message {
@@ -41,18 +50,8 @@ div {
   width: 100%;
 }
 
-.horizontal {
-  display: flex;
-  flex-direction: row;
-  /* align-items: stretch; */
-  flex-wrap: wrap;
-}
-
 .status {
   padding: 10px;
 }
 
-#inputAmount {
-  width: 40px;
-}
 
