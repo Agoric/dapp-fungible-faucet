@@ -18,6 +18,9 @@ export default async function main() {
     document.querySelector('#approve-offer'),
   );
 
+  // The snackbar to approve the offer will be closed by code not timeout.
+  approveOfferSB.timeoutMs = -1;
+
   const gotPaymentSB = mdc.snackbar.MDCSnackbar.attachTo(
     document.querySelector('#got-payment'),
   );
@@ -65,11 +68,11 @@ export default async function main() {
         break;
       }
       case 'walletOfferAdded': {
-        // TODO: handle appropriately
+        approveOfferSB.open();
         break;
       }
       case 'walletOfferHandled': {
-        // TODO: handle appropriately
+        approveOfferSB.close();
         break;
       }
       case 'walletOfferResult': {
@@ -98,7 +101,6 @@ export default async function main() {
           type: 'walletAddOffer',
           data: offer,
         });
-        approveOfferSB.open();
         break;
       }
       case 'CTP_DISCONNECT': {
