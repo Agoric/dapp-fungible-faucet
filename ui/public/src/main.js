@@ -9,10 +9,12 @@ const {
   INSTANCE_BOARD_ID,
   INSTALLATION_BOARD_ID,
   issuerBoardIds: { Token: TOKEN_ISSUER_BOARD_ID },
+  brandBoardIds: { Token: TOKEN_BRAND_BOARD_ID },
 } = dappConstants;
 
 export default async function main() {
   let zoeInvitationDepositFacetId;
+  let pursePetname = ['FungibleFaucet', 'Token'];
 
   const approveOfferSB = mdc.snackbar.MDCSnackbar.attachTo(
     document.querySelector('#approve-offer'),
@@ -53,6 +55,13 @@ export default async function main() {
       }
       case 'walletUpdatePurses': {
         // TODO: handle appropriately
+        const purses = JSON.parse(obj.data);
+        const tokenPurse = purses.find(
+          ({ brandBoardId }) => brandBoardId === TOKEN_BRAND_BOARD_ID,
+        );
+        if (tokenPurse && tokenPurse.pursePetname) {
+          pursePetname = tokenPurse.pursePetname;
+        }
         break;
       }
       case 'walletSuggestIssuerResponse': {
@@ -159,7 +168,7 @@ export default async function main() {
         proposalTemplate: {
           want: {
             Token: {
-              pursePetname: ['FungibleFaucet', 'Token'],
+              pursePetname,
               value: 1000,
             },
           },
