@@ -57,6 +57,10 @@ export default async function deployApi(
     // the ag-solo web server.
     http,
 
+    // This is a scratch pad specific to the current ag-solo and inaccessible
+    // from the chain.
+    uploads: scratch,
+
     // The board is an on-chain object that is used to make private
     // on-chain objects public to everyone else on-chain. These
     // objects get assigned a unique string id. Given the id, other
@@ -89,6 +93,10 @@ export default async function deployApi(
   const invitationBrandP = E(invitationIssuerP).getBrand();
 
   const tokenIssuer = await E(publicFacet).getTokenIssuer();
+
+  // Set up our token to be used by other dapps (like our card store).
+  E(scratch).set('faucetTokenIssuer', tokenIssuer);
+
   const tokenBrand = await E(tokenIssuer).getBrand();
 
   const invitationIssuer = await invitationIssuerP;
