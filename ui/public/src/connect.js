@@ -23,27 +23,29 @@ $debug.addEventListener('change', debugChange);
 debugChange();
 
 /**
- * @param {string} id
+ * @param {string} endpointPath
  * @param {(obj: { type: string, data: any }) => void} recv
  * @param {string} [query='']
  */
-export const connect = (id, recv, query = '') => {
+export const connect = (endpointPath, recv, query = '') => {
+  const statusId = endpointPath === 'wallet' ? 'wallet-status' : `api-status`;
   const $status = /** @type {HTMLSpanElement} */ (document.getElementById(
-    `${id}-status`,
+    statusId,
   ));
   $status.innerHTML = 'Connecting...';
 
-  const endpoint = id === 'wallet' ? `/private/wallet-bridge${query}` : '/api';
+  const endpoint =
+    endpointPath === 'wallet' ? `/private/wallet-bridge${query}` : endpointPath;
 
   /**
    * @param {{ type: string, data: any}} obj
    */
   const send = (obj) => {
     const $m = document.createElement('div');
-    $m.className = `message send ${id}`;
-    $m.innerText = `${id}> ${JSON.stringify(obj)}`;
+    $m.className = `message send ${endpointPath}`;
+    $m.innerText = `${endpointPath}> ${JSON.stringify(obj)}`;
     $messages.appendChild($m);
-    console.log(`${id}>`, obj);
+    console.log(`${endpointPath}>`, obj);
     return rpc(obj, endpoint);
   };
 
@@ -59,7 +61,7 @@ export const connect = (id, recv, query = '') => {
     resolve = res;
     reject = rej;
   });
-  const activator = id === 'wallet' ? startBridge : startApi;
+  const activator = endpointPath === 'wallet' ? startBridge : startApi;
   activator(
     {
       onConnect() {
@@ -74,10 +76,10 @@ export const connect = (id, recv, query = '') => {
           return;
         }
         const $m = document.createElement('div');
-        $m.className = `message receive ${id}`;
-        $m.innerText = `${id}< ${JSON.stringify(obj)}`;
+        $m.className = `message receive ${endpointPath}`;
+        $m.innerText = `${endpointPath}< ${JSON.stringify(obj)}`;
         $messages.appendChild($m);
-        console.log(`${id}<`, obj);
+        console.log(`${endpointPath}<`, obj);
         recv(obj);
       },
       onDisconnect() {

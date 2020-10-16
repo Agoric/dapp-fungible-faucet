@@ -97,7 +97,7 @@ export default async function main() {
     return walletSend;
   });
 
-  await connect('api', apiRecv).then((apiSend) => {
+  await connect('/api/fungible-faucet', apiRecv).then((apiSend) => {
     $mintFungible.removeAttribute('disabled');
     $mintFungible.addEventListener('click', () => {
       const offer = {
