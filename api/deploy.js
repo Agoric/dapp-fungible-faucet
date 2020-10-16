@@ -53,8 +53,8 @@ export default async function deployApi(
     // everyone has access to the same Zoe.
     zoe,
 
-    // The http request handler.
-    // TODO: add more explanation
+    // The http service allows registered handlers that are executed as part of
+    // the ag-solo web server.
     http,
 
     // The board is an on-chain object that is used to make private
@@ -128,7 +128,7 @@ export default async function deployApi(
       board,
       invitationIssuer,
     });
-    await E(http).registerAPIHandler(handler);
+    await E(http).registerURLHandler(handler, '/api/fungible-faucet');
   };
 
   await installHandler();
