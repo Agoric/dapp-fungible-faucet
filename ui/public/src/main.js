@@ -164,6 +164,9 @@ export default async function main() {
             },
           },
         },
+
+        // Tell the wallet that we're handling the offer result.
+        dappContext: true,
       };
       apiSend({
         type: 'fungibleFaucet/sendInvitation',
