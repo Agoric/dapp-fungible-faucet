@@ -126,6 +126,7 @@ export default async function deployApi(
     const handler = E(handlerInstall).spawn({
       creatorFacet,
       board,
+      http,
       invitationIssuer,
     });
 
