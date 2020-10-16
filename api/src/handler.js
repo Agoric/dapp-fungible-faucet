@@ -1,46 +1,14 @@
 // @ts-check
 import { E } from '@agoric/eventual-send';
+import { makeWebSocketHandler } from './lib-http';
 
 const spawnHandler = (
-  { creatorFacet, board, invitationIssuer },
+  { creatorFacet, board, http, invitationIssuer },
   _invitationMaker,
 ) =>
-  harden({
-    // eslint-disable-next-line no-use-before-define
-    getCommandHandler: makeLegacyCommandHandler({
-      creatorFacet,
-      board,
-      invitationIssuer,
-    }),
-  });
-
-export default harden(spawnHandler);
-
-const makeLegacyCommandHandler = ({
-  creatorFacet,
-  board,
-  invitationIssuer,
-}) => {
-  // Here's how you could implement a notification-based
-  // publish/subscribe.
-  const subChannelHandles = new Set();
-
-  return function getCommandHandler() {
-    const handler = {
-      onError(obj, _meta) {
-        console.error('Have error', obj);
-      },
-
-      // The following is to manage the subscribers map.
-      onOpen(_obj, { channelHandle }) {
-        subChannelHandles.add(channelHandle);
-      },
-      onClose(_obj, { channelHandle }) {
-        subChannelHandles.delete(channelHandle);
-      },
-
-      async onMessage(obj, { _channelHandle }) {
-        // These are messages we receive from either POST or WebSocket.
+  makeWebSocketHandler(http, (send, _meta) =>
+    harden({
+      async onMessage(obj) {
         switch (obj.type) {
           case 'fungibleFaucet/sendInvitation': {
             const { depositFacetId, offer } = obj.data;
@@ -60,17 +28,18 @@ const makeLegacyCommandHandler = ({
             // TODO: We should make this process more robust.
             await E(depositFacet).receive(invitation);
 
-            return harden({
+            send({
               type: 'fungibleFaucet/sendInvitationResponse',
               data: { offer: updatedOffer },
             });
+            return true;
           }
 
           default:
             return undefined;
         }
       },
-    };
-    return harden(handler);
-  };
-};
+    }),
+  );
+
+export default harden(spawnHandler);
