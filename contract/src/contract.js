@@ -26,8 +26,8 @@ const start = async (zcf) => {
   // can be accessed synchronously.
   const { amountMath, issuer } = zcfMint.getIssuerRecord();
 
-  const mintPayment = (extent) => (seat) => {
-    const amount = amountMath.make(extent);
+  const mintPayment = (seat) => {
+    const amount = amountMath.make(1000);
     // Synchronously mint and allocate amount to seat.
     zcfMint.mintGains({ Token: amount }, seat);
     // Exit the seat so that the user gets a payout.
@@ -40,8 +40,7 @@ const start = async (zcf) => {
   const creatorFacet = {
     // The creator of the instance can send invitations to anyone
     // they wish to.
-    makeInvitation: (extent = 1000) =>
-      zcf.makeInvitation(mintPayment(extent), 'mint a payment'),
+    makeInvitation: () => zcf.makeInvitation(mintPayment, 'mint a payment'),
     getTokenIssuer: () => issuer,
   };
 
