@@ -45,6 +45,14 @@ html, body {
   padding-top: 20px;
 }
 
+.message.receive {
+  color: blue;
+}
+
+.message.send {
+  color: green;
+}
+
 .message {
   word-wrap: break-word;
   width: 100%;
