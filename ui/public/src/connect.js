@@ -22,6 +22,38 @@ function debugChange() {
 $debug.addEventListener('change', debugChange);
 debugChange();
 
+function linesToHTML(lines) {
+  return lines
+    .split('\n')
+    .map(
+      l =>
+        l
+          // These replacements are for securely inserting into .innerHTML, from
+          // https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html#rule-1-html-encode-before-inserting-untrusted-data-into-html-element-content
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#x27;')
+          .replace(/\//g, '&#x2F;')
+
+          // These two replacements are just for word wrapping, not security.
+          .replace(/\t/g, '  ') // expand tabs
+          .replace(/ {2}/g, ' &nbsp;'), // try preserving whitespace
+    )
+    .join('<br />');
+}
+
+/**
+ * Nicely put an object into a <code> tag.
+ * @param {HTMLElement} codeTag
+ * @param {any} obj
+ */
+const format = (codeTag, obj) => {
+  const str = obj ? JSON.stringify(obj, null, 2) : `${obj}`;
+  codeTag.innerHTML = linesToHTML(str);
+};
+
 /**
  * @param {string} endpointPath
  * @param {(obj: { type: string, data: any }) => void} recv
@@ -43,7 +75,7 @@ export const connect = (endpointPath, recv, query = '') => {
   const send = (obj) => {
     const $m = document.createElement('div');
     $m.className = `message send ${endpointPath}`;
-    $m.innerText = `${endpointPath}> ${JSON.stringify(obj)}`;
+    $m.innerHTML = `${endpointPath}> ${linesToHTML(JSON.stringify(obj, null, 2))}`;
     $messages.appendChild($m);
     console.log(`${endpointPath}>`, obj);
     return rpc(obj, endpoint);
@@ -77,7 +109,15 @@ export const connect = (endpointPath, recv, query = '') => {
         }
         const $m = document.createElement('div');
         $m.className = `message receive ${endpointPath}`;
-        $m.innerText = `${endpointPath}< ${JSON.stringify(obj)}`;
+
+        const displayObj = { ...obj };
+        if (obj.type === 'walletUpdatePurses') {
+          // This returns JSON for now.
+          displayObj.data = JSON.parse(obj.data);
+        }
+
+        $m.innerHTML = `${endpointPath}< ${linesToHTML(JSON.stringify(displayObj, null, 2))}`;
+        // $m.innerText = `${endpointPath}< ${JSON.stringify(obj)}`;
         $messages.appendChild($m);
         console.log(`${endpointPath}<`, obj);
         recv(obj);
