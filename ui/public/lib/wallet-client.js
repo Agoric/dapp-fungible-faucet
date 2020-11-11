@@ -8,7 +8,7 @@ import { registerSocket, getActiveSocket, closeSocket } from './socket';
 /**
  * @typedef {Object} SocketHandler
  * @property {() => void} [onConnect]
- * @property {(msg: string) => void} [onMessage]
+ * @property {(msg: Record<string, unknown>) => void} [onMessage]
  * @property {() => void} [onDisconnect]
  */
 
