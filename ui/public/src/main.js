@@ -14,7 +14,44 @@ const {
 
 export default async function main() {
   let zoeInvitationDepositFacetId;
+  let apiSend;
   let tokenPursePetname = ['FungibleFaucet', 'Token'];
+
+  const $mintFungible = /** @type {HTMLInputElement} */ (document.getElementById(
+    'mintFungible',
+  ));
+
+  const maybeEnableButtons = () => {
+    if (!apiSend || !zoeInvitationDepositFacetId) {
+      return;
+    }
+    $mintFungible.removeAttribute('disabled');
+    $mintFungible.addEventListener('click', () => {
+      const offer = {
+        // JSONable ID for this offer.  This is scoped to the origin.
+        id: Date.now(),
+
+        proposalTemplate: {
+          want: {
+            Token: {
+              pursePetname: tokenPursePetname,
+              value: 1000,
+            },
+          },
+        },
+
+        // Tell the wallet that we're handling the offer result.
+        dappContext: true,
+      };
+      apiSend({
+        type: 'fungibleFaucet/sendInvitation',
+        data: {
+          depositFacetId: zoeInvitationDepositFacetId,
+          offer,
+        },
+      });
+    });
+  };
 
   const approveOfferSB = mdc.snackbar.MDCSnackbar.attachTo(
     document.querySelector('#approve-offer'),
@@ -43,6 +80,7 @@ export default async function main() {
     switch (obj.type) {
       case 'walletDepositFacetIdResponse': {
         zoeInvitationDepositFacetId = obj.data;
+        maybeEnableButtons();
         break;
       }
       case 'walletNeedDappApproval': {
@@ -124,10 +162,6 @@ export default async function main() {
     }
   };
 
-  const $mintFungible = /** @type {HTMLInputElement} */ (document.getElementById(
-    'mintFungible',
-  ));
-
   // All the "suggest" messages below are backward-compatible:
   // the new wallet will confirm them with the user, but the old
   // wallet will just ignore the messages and allow access immediately.
@@ -160,35 +194,9 @@ export default async function main() {
     return walletSend;
   });
 
-  await connect('/api/fungible-faucet', apiRecv).then((apiSend) => {
-    $mintFungible.removeAttribute('disabled');
-    $mintFungible.addEventListener('click', () => {
-      const offer = {
-        // JSONable ID for this offer.  This is scoped to the origin.
-        id: Date.now(),
-
-        proposalTemplate: {
-          want: {
-            Token: {
-              pursePetname: tokenPursePetname,
-              value: 1000,
-            },
-          },
-        },
-
-        // Tell the wallet that we're handling the offer result.
-        dappContext: true,
-      };
-      apiSend({
-        type: 'fungibleFaucet/sendInvitation',
-        data: {
-          depositFacetId: zoeInvitationDepositFacetId,
-          offer,
-        },
-      });
-    });
-
-    return apiSend;
+  await connect('/api/fungible-faucet', apiRecv).then((rawApiSend) => {
+    apiSend = rawApiSend;
+    maybeEnableButtons();
   });
 }
 
