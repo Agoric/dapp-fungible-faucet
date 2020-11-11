@@ -26,7 +26,7 @@ function linesToHTML(lines) {
   return lines
     .split('\n')
     .map(
-      l =>
+      (l) =>
         l
           // These replacements are for securely inserting into .innerHTML, from
           // https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html#rule-1-html-encode-before-inserting-untrusted-data-into-html-element-content
@@ -43,16 +43,6 @@ function linesToHTML(lines) {
     )
     .join('<br />');
 }
-
-/**
- * Nicely put an object into a <code> tag.
- * @param {HTMLElement} codeTag
- * @param {any} obj
- */
-const format = (codeTag, obj) => {
-  const str = obj ? JSON.stringify(obj, null, 2) : `${obj}`;
-  codeTag.innerHTML = linesToHTML(str);
-};
 
 /**
  * @param {string} endpointPath
@@ -75,7 +65,9 @@ export const connect = (endpointPath, recv, query = '') => {
   const send = (obj) => {
     const $m = document.createElement('div');
     $m.className = `message send ${endpointPath}`;
-    $m.innerHTML = `${endpointPath}> ${linesToHTML(JSON.stringify(obj, null, 2))}`;
+    $m.innerHTML = `${endpointPath}> ${linesToHTML(
+      JSON.stringify(obj, null, 2),
+    )}`;
     $messages.appendChild($m);
     console.log(`${endpointPath}>`, obj);
     return rpc(obj, endpoint);
@@ -100,9 +92,7 @@ export const connect = (endpointPath, recv, query = '') => {
         $status.innerHTML = 'Connected';
         resolve(send);
       },
-      /**
-       * @param {{ type: string }} msg
-       */
+      /** @param {Record<string, unknown>} obj */
       onMessage(obj) {
         if (!obj || typeof obj.type !== 'string') {
           return;
@@ -111,12 +101,14 @@ export const connect = (endpointPath, recv, query = '') => {
         $m.className = `message receive ${endpointPath}`;
 
         const displayObj = { ...obj };
-        if (obj.type === 'walletUpdatePurses') {
+        if (obj.type === 'walletUpdatePurses' && typeof obj.data === 'string') {
           // This returns JSON for now.
           displayObj.data = JSON.parse(obj.data);
         }
 
-        $m.innerHTML = `${endpointPath}< ${linesToHTML(JSON.stringify(displayObj, null, 2))}`;
+        $m.innerHTML = `${endpointPath}< ${linesToHTML(
+          JSON.stringify(displayObj, null, 2),
+        )}`;
         // $m.innerText = `${endpointPath}< ${JSON.stringify(obj)}`;
         $messages.appendChild($m);
         console.log(`${endpointPath}<`, obj);
