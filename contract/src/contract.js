@@ -1,5 +1,6 @@
 // @ts-check
 import '@agoric/zoe/exported';
+import { assert, details } from '@agoric/assert';
 
 /**
  * This is a very simple contract that creates a new issuer and mints payments
@@ -26,15 +27,9 @@ const start = async (zcf) => {
   // can be accessed synchronously.
   const { amountMath, issuer } = zcfMint.getIssuerRecord();
 
-  const mintPayment = (seat) => {
+  const mintPayment = () => {
     const amount = amountMath.make(1000);
-    // Synchronously mint and allocate amount to seat.
-    zcfMint.mintGains({ Token: amount }, seat);
-    // Exit the seat so that the user gets a payout.
-    seat.exit();
-    // Since the user is getting the payout through Zoe, we can
-    // return anything here. Let's return some helpful instructions.
-    return 'Offer completed. You should receive a payment from Zoe';
+    assert(false, details`amount was ${amount}`);
   };
 
   const creatorFacet = {
