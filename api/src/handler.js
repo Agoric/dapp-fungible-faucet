@@ -1,5 +1,6 @@
 // @ts-check
 import { E } from '@agoric/eventual-send';
+import { Far } from '@agoric/marshal';
 import { makeWebSocketHandler } from './lib-http';
 
 const spawnHandler = (
@@ -7,7 +8,7 @@ const spawnHandler = (
   _invitationMaker,
 ) =>
   makeWebSocketHandler(http, (send, _meta) =>
-    harden({
+    Far('connectionHandler', {
       async onMessage(obj) {
         switch (obj.type) {
           case 'fungibleFaucet/sendInvitation': {

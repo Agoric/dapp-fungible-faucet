@@ -1,5 +1,6 @@
 // @ts-check
 import '@agoric/zoe/exported';
+import { Far } from '@agoric/marshal';
 
 /**
  * This is a very simple contract that creates a new issuer and mints payments
@@ -37,18 +38,18 @@ const start = async (zcf) => {
     return 'Offer completed. You should receive a payment from Zoe';
   };
 
-  const creatorFacet = {
+  const creatorFacet = Far('creatorFacet', {
     // The creator of the instance can send invitations to anyone
     // they wish to.
     makeInvitation: () => zcf.makeInvitation(mintPayment, 'mint a payment'),
     getTokenIssuer: () => issuer,
-  };
+  });
 
-  const publicFacet = {
+  const publicFacet = Far('publicFacet', {
     // Make the token issuer public. Note that only the mint can
     // make new digital assets. The issuer is ok to make public.
     getTokenIssuer: () => issuer,
-  };
+  });
 
   // Return the creatorFacet to the creator, so they can make
   // invitations for others to get payments of tokens. Publish the
