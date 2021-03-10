@@ -5,14 +5,15 @@
 
 // @ts-check
 import { E } from '@agoric/eventual-send';
+import { Far } from '@agoric/marshal';
 
 export const makeWebSocketHandler = (http, makeConnectionHandler) => {
-  return harden({
+  return Far('webSocketHandler', {
     // This creates the commandHandler for the http service to handle inbound
     // websocket requests.
     getCommandHandler() {
       const channelToConnHandler = new WeakMap();
-      const handler = {
+      const handler = Far('httpCommandHandler', {
         // Executed upon an error in handling the websocket.
         onError(obj, { channelHandle }) {
           const connHandler = channelToConnHandler.get(channelHandle);
@@ -43,8 +44,8 @@ export const makeWebSocketHandler = (http, makeConnectionHandler) => {
           const connHandler = channelToConnHandler.get(channelHandle);
           return connHandler.onMessage(obj);
         },
-      };
-      return harden(handler);
+      });
+      return handler;
     },
   });
 };
