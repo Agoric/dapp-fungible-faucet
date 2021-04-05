@@ -79,7 +79,7 @@
     "parcel-plugin-static-files-copy": "^2.5.0"
   },
   "devDependencies": {
-    "eslint": "^7.11.0",
+    "eslint": "^7.22.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
