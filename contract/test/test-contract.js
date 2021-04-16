@@ -1,5 +1,7 @@
 // @ts-check
 
+/* global __dirname */
+
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 import bundleSource from '@agoric/bundle-source';
@@ -7,7 +9,7 @@ import bundleSource from '@agoric/bundle-source';
 import { E } from '@agoric/eventual-send';
 import { makeFakeVatAdmin } from '@agoric/zoe/src/contractFacet/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
-import { makeLocalAmountMath } from '@agoric/ertp';
+import { amountMath } from '@agoric/ertp';
 
 const contractPath = `${__dirname}/../src/contract`;
 
@@ -32,11 +34,11 @@ test('zoe - mint payments', async (t) => {
 
   // Let's get the tokenIssuer from the contract so we can evaluate
   // what we get as our payout
-  const publicFacet = await E(zoe).getPublicFacet(instance);
-  const tokenIssuer = await E(publicFacet).getTokenIssuer();
-  const amountMath = await makeLocalAmountMath(tokenIssuer);
+  const publicFacet = E(zoe).getPublicFacet(instance);
+  const tokenIssuer = E(publicFacet).getTokenIssuer();
+  const tokenBrand = await E(tokenIssuer).getBrand();
 
-  const tokens1000 = await E(amountMath).make(1000);
+  const tokens1000 = amountMath.make(tokenBrand, 1000n);
   const tokenPayoutAmount = await E(tokenIssuer).getAmountOf(paymentP);
 
   // Bob got 1000 tokens

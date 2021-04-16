@@ -1,4 +1,5 @@
 // @ts-check
+
 import fs from 'fs';
 import '@agoric/zoe/exported';
 import { E } from '@agoric/eventual-send';
