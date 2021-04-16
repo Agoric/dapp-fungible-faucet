@@ -1,5 +1,7 @@
 // @ts-check
 
+/* global __dirname */
+
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 import bundleSource from '@agoric/bundle-source';

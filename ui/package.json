@@ -26,40 +26,8 @@
   },
   "eslintConfig": {
     "extends": [
-      "airbnb-base",
-      "plugin:prettier/recommended"
-    ],
-    "env": {
-      "es6": true
-    },
-    "globals": {
-      "harden": "readonly"
-    },
-    "rules": {
-      "implicit-arrow-linebreak": "off",
-      "function-paren-newline": "off",
-      "arrow-parens": "off",
-      "strict": "off",
-      "no-console": "off",
-      "no-unused-vars": [
-        "error",
-        {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_"
-        }
-      ],
-      "no-return-assign": "off",
-      "no-param-reassign": "off",
-      "no-restricted-syntax": [
-        "off",
-        "ForOfStatement"
-      ],
-      "no-unused-expressions": "off",
-      "no-loop-func": "off",
-      "no-inner-declarations": "off",
-      "import/prefer-default-export": "off",
-      "import/no-extraneous-dependencies": "off"
-    }
+      "@agoric"
+    ]
   },
   "eslintIgnore": [
     "dist/"
@@ -76,9 +44,11 @@
   },
   "dependencies": {
     "parcel-bundler": "^1.12.4",
-    "parcel-plugin-static-files-copy": "^2.5.0"
+    "parcel-plugin-static-files-copy": "^2.5.0",
+    "regenerator-runtime": "0.13.7"
   },
   "devDependencies": {
+    "agoric": "*",
     "eslint": "^7.23.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.12.0",
@@ -93,15 +63,6 @@
   },
   "prettier": {
     "trailingComma": "all",
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": [
-          "*.js",
-          "*.cjs",
-          "*.mjs"
-        ]
-      }
-    ]
+    "singleQuote": true
   }
 }
