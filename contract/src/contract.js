@@ -1,6 +1,6 @@
 // @ts-check
 import '@agoric/zoe/exported';
-import { amountMath} from '@agoric/ertp';
+import { amountMath } from '@agoric/ertp';
 
 /**
  * This is a very simple contract that creates a new issuer and mints payments
