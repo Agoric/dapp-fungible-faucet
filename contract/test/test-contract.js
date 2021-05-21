@@ -9,7 +9,7 @@ import bundleSource from '@agoric/bundle-source';
 import { E } from '@agoric/eventual-send';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
 import { makeZoe } from '@agoric/zoe';
-import { amountMath } from '@agoric/ertp';
+import { AmountMath } from '@agoric/ertp';
 
 const contractPath = `${__dirname}/../src/contract`;
 
@@ -38,7 +38,7 @@ test('zoe - mint payments', async (t) => {
   const tokenIssuer = E(publicFacet).getTokenIssuer();
   const tokenBrand = await E(tokenIssuer).getBrand();
 
-  const tokens1000 = amountMath.make(tokenBrand, 1000n);
+  const tokens1000 = AmountMath.make(tokenBrand, 1000n);
   const tokenPayoutAmount = await E(tokenIssuer).getAmountOf(paymentP);
 
   // Bob got 1000 tokens
