@@ -27,6 +27,7 @@ const start = async (zcf) => {
   // can be accessed synchronously.
   const { issuer, brand } = zcfMint.getIssuerRecord();
 
+  /** @type {OfferHandler} */
   const mintPayment = (seat) => {
     const amount = AmountMath.make(brand, 1000n);
     // Synchronously mint and allocate amount to seat.
