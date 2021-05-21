@@ -20,7 +20,7 @@ test('zoe - mint payments', async (t) => {
   const bundle = await bundleSource(contractPath);
 
   // install the contract
-  const installation = await E(zoe).install(bundle);
+  const installation = E(zoe).install(bundle);
 
   const { creatorFacet, instance } = await E(zoe).startInstance(installation);
 
@@ -28,7 +28,7 @@ test('zoe - mint payments', async (t) => {
   const invitation = E(creatorFacet).makeInvitation();
 
   // Bob makes an offer using the invitation
-  const seat = await E(zoe).offer(invitation);
+  const seat = E(zoe).offer(invitation);
 
   const paymentP = E(seat).getPayout('Token');
 
