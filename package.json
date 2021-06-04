@@ -34,6 +34,9 @@
     "agoric": "*",
     "eslint-plugin-eslint-comments": "^3.1.2"
   },
+  "resolutions": {
+    "**/esm": "agoric-labs/esm#Agoric-built"
+  },
   "prettier": {
     "trailingComma": "all",
     "singleQuote": true,
