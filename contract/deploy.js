@@ -64,8 +64,6 @@ export default async function deployContract(
 
   // We must first fund our "feePurse", the purse that we will use to
   // pay for our interactions with Zoe. 
-  const RUNIssuer = E(home.agoricNames).lookup('issuer', 'RUN');
-  const RUNBrand = await E(RUNIssuer).getBrand();
   const RUNPurse = E(wallet).getPurse(pursePetnames.RUN);
   const runAmount = await E(RUNPurse).getCurrentAmount();
   const feePurse = E(faucet).getFeePurse();
