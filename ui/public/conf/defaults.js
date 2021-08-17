@@ -1,13 +1,13 @@
-// GENERATED FROM /Users/michael/agoric/dapp-fungible-faucet/api/deploy.js
+// GENERATED FROM /Users/katesills/code/dapp-fungible-faucet/api/deploy.js
 export default {
-  "INSTANCE_BOARD_ID": "1202180815",
-  "INSTALLATION_BOARD_ID": "1265655452",
-  "INVITE_BRAND_BOARD_ID": "1667979430",
+  "INSTANCE_BOARD_ID": "794977354",
+  "INSTALLATION_BOARD_ID": "1530295560",
+  "INVITE_BRAND_BOARD_ID": "500716545",
   "brandBoardIds": {
-    "Token": "813441138"
+    "Token": "529406044"
   },
   "issuerBoardIds": {
-    "Token": "605437304"
+    "Token": "715805464"
   },
   "BRIDGE_URL": "http://127.0.0.1:8000",
   "API_URL": "http://127.0.0.1:8000"

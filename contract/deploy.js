@@ -4,6 +4,8 @@ import fs from 'fs';
 import '@agoric/zoe/exported';
 import { E } from '@agoric/eventual-send';
 
+import { pursePetnames } from './petnames';
+
 // This script takes our contract code, installs it on Zoe, and makes
 // the installation publicly available. Our backend API script will
 // use this installation in a later step.
@@ -21,7 +23,8 @@ import { E } from '@agoric/eventual-send';
  */
 
 /**
- * @param {Promise<{zoe: ZoeService, board: Board}>} homePromise
+ * @param {Promise<{zoe: ZoeService, board: Board, agoricNames:
+ * Object, wallet: Object, faucet: Object}>} homePromise
  * @param {DeployPowers} powers
  */
 export default async function deployContract(
@@ -51,9 +54,27 @@ export default async function deployContract(
     // have a one-to-one bidirectional mapping. If a value is added a
     // second time, the original id is just returned.
     board,
+
+    // The wallet holds and manages assets for the user.
+    wallet,
+
+    // The faucet provides an initial amount of RUN for the user to use.
+    faucet,
   } = home;
 
-  // First, we must bundle up our contract code (./src/contract.js)
+  // We must first fund our "feePurse", the purse that we will use to
+  // pay for our interactions with Zoe. 
+  const RUNIssuer = E(home.agoricNames).lookup('issuer', 'RUN');
+  const RUNBrand = await E(RUNIssuer).getBrand();
+  const RUNPurse = E(wallet).getPurse(pursePetnames.RUN);
+  const runAmount = await E(RUNPurse).getCurrentAmount();
+  const feePurse = E(faucet).getFeePurse();
+  const feePayment = await E(
+    E(wallet).getPurse(pursePetnames.RUN),
+  ).withdraw(runAmount);
+  await E(feePurse).deposit(feePayment);
+
+  // We must bundle up our contract code (./src/contract.js)
   // and install it on Zoe. This returns an installationHandle, an
   // opaque, unforgeable identifier for our contract code that we can
   // reuse again and again to create new, live contract instances.
