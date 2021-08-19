@@ -1,19 +1,17 @@
 // @ts-check
 
-import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
-import path from 'path';
+/* global __dirname */
+
+import { test } from '@agoric/zoe/tools/prepare-test-env-ava';
 
 import bundleSource from '@agoric/bundle-source';
 
 import { E } from '@agoric/eventual-send';
-import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
+import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin';
 import { makeZoeKit } from '@agoric/zoe';
 import { AmountMath } from '@agoric/ertp';
 
-const filename = new URL(import.meta.url).pathname;
-const dirname = path.dirname(filename);
-
-const contractPath = `${dirname}/../src/contract.js`;
+const contractPath = `${__dirname}/../src/contract`;
 
 test('zoe - mint payments', async (t) => {
   const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);

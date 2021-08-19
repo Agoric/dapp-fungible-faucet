@@ -1,7 +1,7 @@
 // @ts-check
 /* globals window document */
 
-import { registerSocket, getActiveSocket, closeSocket } from './socket.js';
+import { registerSocket, getActiveSocket, closeSocket } from './socket';
 
 // Wallet bridge
 

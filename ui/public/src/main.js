@@ -1,8 +1,8 @@
 // @ts-check
 /* globals document mdc */
-import 'regenerator-runtime/runtime.js';
-import dappConstants from '../lib/constants.js';
-import { connect } from './connect.js';
+import 'regenerator-runtime/runtime';
+import dappConstants from '../lib/constants';
+import { connect } from './connect';
 
 const {
   INVITE_BRAND_BOARD_ID,

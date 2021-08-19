@@ -1,7 +1,7 @@
 // @ts-check
 
 import fs from 'fs';
-import '@agoric/zoe/exported.js';
+import '@agoric/zoe/exported';
 import { E } from '@agoric/eventual-send';
 
 import { pursePetnames } from './petnames';
