@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "useWorkspaces": true,
+  "main": "index.js",
+  "parsers": {
+    "js": "mjs"
+  },
   "workspaces": [
     "api",
     "contract",
@@ -34,6 +38,9 @@
   "dependencies": {
     "agoric": "*",
     "eslint-plugin-eslint-comments": "^3.1.2"
+  },
+  "resolutions": {
+    "**/esm": "agoric-labs/esm#Agoric-built"
   },
   "prettier": {
     "trailingComma": "all",
