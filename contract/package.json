@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Contract for the Agoric Dapp",
-  "parsers": {
-    "js": "mjs"
-  },
+  "type": "module",
   "scripts": {
     "build": "exit 0",
     "test": "ava --verbose",
@@ -32,17 +30,14 @@
     "@agoric/ertp": "*",
     "@agoric/eventual-send": "*",
     "@agoric/install-ses": "*",
+    "@agoric/marshal": "*",
     "@agoric/notifier": "*",
     "@agoric/store": "*",
-    "@agoric/zoe": "*",
-    "esm": "^3.2.5"
+    "@agoric/zoe": "*"
   },
   "ava": {
     "files": [
       "test/**/test-*.js"
-    ],
-    "require": [
-      "esm"
     ],
     "timeout": "10m"
   },
