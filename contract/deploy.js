@@ -63,13 +63,13 @@ export default async function deployContract(
   } = home;
 
   // We must first fund our "feePurse", the purse that we will use to
-  // pay for our interactions with Zoe. 
+  // pay for our interactions with Zoe.
   const RUNPurse = E(wallet).getPurse(pursePetnames.RUN);
   const runAmount = await E(RUNPurse).getCurrentAmount();
   const feePurse = E(faucet).getFeePurse();
-  const feePayment = await E(
-    E(wallet).getPurse(pursePetnames.RUN),
-  ).withdraw(runAmount);
+  const feePayment = await E(E(wallet).getPurse(pursePetnames.RUN)).withdraw(
+    runAmount,
+  );
   await E(feePurse).deposit(feePayment);
 
   // We must bundle up our contract code (./src/contract.js)
