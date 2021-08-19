@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "agoric": "*",
+    "caniuse-lite": "1.0.30001251",
     "eslint": "^7.23.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.12.0",
