@@ -1,5 +1,5 @@
 // @ts-check
-import '@agoric/zoe/exported';
+import '@agoric/zoe/exported.js';
 import { AmountMath } from '@agoric/ertp';
 import { Far } from '@agoric/marshal';
 

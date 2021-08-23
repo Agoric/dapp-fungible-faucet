@@ -3,9 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "description": "Agoric Dapp web server handler",
-  "parsers": {
-    "js": "mjs"
-  },
+  "type": "module",
   "scripts": {
     "build": "exit 0",
     "test": "exit 0",
@@ -29,8 +27,7 @@
   "dependencies": {
     "@agoric/eventual-send": "*",
     "@agoric/marshal": "*",
-    "@agoric/zoe": "*",
-    "esm": "^3.2.5"
+    "@agoric/zoe": "*"
   },
   "eslintConfig": {
     "extends": [
