@@ -1,8 +1,8 @@
 // @ts-check
 /* globals document */
-import { rpc } from '../lib/socket';
-import { activateSocket as startApi } from '../lib/api-client';
-import { activateSocket as startBridge } from '../lib/wallet-client';
+import { rpc } from '../lib/socket.js';
+import { activateSocket as startApi } from '../lib/api-client.js';
+import { activateSocket as startBridge } from '../lib/wallet-client.js';
 
 const $messages = /** @type {HTMLDivElement} */ (document.getElementById(
   `messages`,
