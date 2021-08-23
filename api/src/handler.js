@@ -1,6 +1,6 @@
 // @ts-check
 import { E } from '@agoric/eventual-send';
-import { makeWebSocketHandler } from './lib-http';
+import { makeWebSocketHandler } from './lib-http.js';
 
 const spawnHandler = (
   { creatorFacet, board, http, invitationIssuer },
