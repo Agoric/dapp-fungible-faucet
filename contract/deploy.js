@@ -1,10 +1,10 @@
 // @ts-check
 
 import fs from 'fs';
-import '@agoric/zoe/exported';
+import '@agoric/zoe/exported.js';
 import { E } from '@agoric/eventual-send';
 
-import { pursePetnames } from './petnames';
+import { pursePetnames } from './petnames.js';
 
 // This script takes our contract code, installs it on Zoe, and makes
 // the installation publicly available. Our backend API script will
