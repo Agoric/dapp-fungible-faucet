@@ -28,7 +28,6 @@ import { pursePetnames } from './petnames.js';
  */
 
 /**
- *
  * @param {(path: string) => Promise<{ moduleFormat: string, source: string }>} bundleSource
  * @param {(path: string) => string} pathResolve
  * @param {ERef<ZoeService>} zoe
@@ -113,9 +112,12 @@ const deployContract = async (homePromise, { bundleSource, pathResolve }) => {
   } = home;
 
   await sendDeposit(wallet, faucet);
-  const [{ CONTRACT_NAME, INSTALLATION_BOARD_ID }] = await Promise.all([
-    installBundle(bundleSource, pathResolve, zoe, board),
-  ]);
+  const { CONTRACT_NAME, INSTALLATION_BOARD_ID } = await installBundle(
+    bundleSource,
+    pathResolve,
+    zoe,
+    board,
+  );
 
   // Save the constants somewhere where the UI and api can find it.
   const dappConstants = {
