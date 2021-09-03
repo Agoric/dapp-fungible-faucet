@@ -1,4 +1,4 @@
-/* global lockdown */
+/* eslint-disable import/no-extraneous-dependencies */
 import 'ses/dist/ses.umd'; // adds lockdown, harden, and Compartment
 import '@agoric/eventual-send/shim'; // adds support needed by E
 
