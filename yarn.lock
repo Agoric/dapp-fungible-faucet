@@ -7610,7 +7610,7 @@ ses@^0.12.6:
     "@agoric/make-hardener" "^0.1.2"
     "@agoric/transform-module" "^0.4.1"
 
-ses@^0.14.1:
+ses@^0.14.1, ses@^0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/ses/-/ses-0.14.2.tgz#3dd62c1779cc9ee5df506d7b1a40fe514ba541e1"
   integrity sha512-RKAOt8KxkJJyclwfd0mQ6GtmIyYUOrDew7DwKM6DTWY8f9u1eDJccpHXvxDhpXDcWlJ40dtC/FCx12BFZuGPng==

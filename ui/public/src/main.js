@@ -1,6 +1,6 @@
 // @ts-check
 /* globals document mdc */
-import 'regenerator-runtime/runtime.js';
+import './install-ses-lockdown.js';
 import dappConstants from '../lib/constants.js';
 import { connect } from './connect.js';
 
