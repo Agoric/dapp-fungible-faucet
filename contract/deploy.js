@@ -112,9 +112,9 @@ const deployContract = async (homePromise, { bundleSource, pathResolve }) => {
     faucet,
   } = home;
 
+  await sendDeposit(wallet, faucet);
   const [{ CONTRACT_NAME, INSTALLATION_BOARD_ID }] = await Promise.all([
     installBundle(bundleSource, pathResolve, zoe, board),
-    sendDeposit(wallet, faucet),
   ]);
 
   // Save the constants somewhere where the UI and api can find it.
