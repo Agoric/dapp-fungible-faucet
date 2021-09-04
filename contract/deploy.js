@@ -11,6 +11,11 @@ import { pursePetnames } from './petnames.js';
 // use this installation in a later step.
 
 /**
+ * @template T
+ * @typedef {import('@agoric/eventual-send').ERef<T>} ERef
+ */
+
+/**
  * @typedef {Object} DeployPowers The special powers that agoric deploy gives us
  * @property {(path: string) => Promise<{ moduleFormat: string, source: string }>} bundleSource
  * @property {(path: string) => string} pathResolve
@@ -23,14 +28,58 @@ import { pursePetnames } from './petnames.js';
  */
 
 /**
- * @param {Promise<{zoe: ZoeService, board: Board, agoricNames:
- * Object, wallet: Object, faucet: Object}>} homePromise
+ * @param {(path: string) => Promise<{ moduleFormat: string, source: string }>} bundleSource
+ * @param {(path: string) => string} pathResolve
+ * @param {ERef<ZoeService>} zoe
+ * @param {ERef<Board>} board
+ * @returns {Promise<{ CONTRACT_NAME: string, INSTALLATION_BOARD_ID: string }>}
+ */
+const installBundle = async (bundleSource, pathResolve, zoe, board) => {
+  // We must bundle up our contract code (./src/contract.js)
+  // and install it on Zoe. This returns an installationHandle, an
+  // opaque, unforgeable identifier for our contract code that we can
+  // reuse again and again to create new, live contract instances.
+  const bundle = await bundleSource(pathResolve(`./src/contract.js`));
+  const installation = await E(zoe).install(bundle);
+
+  // Let's share this installation with other people, so that
+  // they can run our contract code by making a contract
+  // instance (see the api deploy script in this repo to see an
+  // example of how to use the installation to make a new contract
+  // instance.)
+  // To share the installation, we're going to put it in the
+  // board. The board is a shared, on-chain object that maps
+  // strings to objects.
+  const CONTRACT_NAME = 'fungibleFaucet';
+  const INSTALLATION_BOARD_ID = await E(board).getId(installation);
+  console.log('- SUCCESS! contract code installed on Zoe');
+  console.log(`-- Contract Name: ${CONTRACT_NAME}`);
+  console.log(`-- Installation Board Id: ${INSTALLATION_BOARD_ID}`);
+  return { CONTRACT_NAME, INSTALLATION_BOARD_ID };
+};
+
+/**
+ * @param {ERef<Object>} wallet
+ * @param {ERef<Object>} faucet
+ */
+const sendDeposit = async (wallet, faucet) => {
+  // We must first fund our "feePurse", the purse that we will use to
+  // pay for our interactions with Zoe.
+  const RUNPurse = E(wallet).getPurse(pursePetnames.RUN);
+  const runAmount = await E(RUNPurse).getCurrentAmount();
+  const feePurse = E(faucet).getFeePurse();
+  const feePayment = await E(E(wallet).getPurse(pursePetnames.RUN)).withdraw(
+    runAmount,
+  );
+  await E(feePurse).deposit(feePayment);
+};
+
+/**
+ * @param {Promise<{zoe: ERef<ZoeService>, board: ERef<Board>, agoricNames:
+ * Object, wallet: ERef<Object>, faucet: ERef<Object>}>} homePromise
  * @param {DeployPowers} powers
  */
-export default async function deployContract(
-  homePromise,
-  { bundleSource, pathResolve },
-) {
+const deployContract = async (homePromise, { bundleSource, pathResolve }) => {
   // Your off-chain machine (what we call an ag-solo) starts off with
   // a number of references, some of which are shared objects on chain, and
   // some of which are objects that only exist on your machine.
@@ -62,37 +111,13 @@ export default async function deployContract(
     faucet,
   } = home;
 
-  // We must first fund our "feePurse", the purse that we will use to
-  // pay for our interactions with Zoe.
-  const RUNPurse = E(wallet).getPurse(pursePetnames.RUN);
-  const runAmount = await E(RUNPurse).getCurrentAmount();
-  const feePurse = E(faucet).getFeePurse();
-  const feePayment = await E(E(wallet).getPurse(pursePetnames.RUN)).withdraw(
-    runAmount,
+  await sendDeposit(wallet, faucet);
+  const { CONTRACT_NAME, INSTALLATION_BOARD_ID } = await installBundle(
+    bundleSource,
+    pathResolve,
+    zoe,
+    board,
   );
-  await E(feePurse).deposit(feePayment);
-
-  // We must bundle up our contract code (./src/contract.js)
-  // and install it on Zoe. This returns an installationHandle, an
-  // opaque, unforgeable identifier for our contract code that we can
-  // reuse again and again to create new, live contract instances.
-  const bundle = await bundleSource(pathResolve(`./src/contract.js`));
-  const installation = await E(zoe).install(bundle);
-
-  // Let's share this installation with other people, so that
-  // they can run our contract code by making a contract
-  // instance (see the api deploy script in this repo to see an
-  // example of how to use the installation to make a new contract
-  // instance.)
-
-  // To share the installation, we're going to put it in the
-  // board. The board is a shared, on-chain object that maps
-  // strings to objects.
-  const CONTRACT_NAME = 'fungibleFaucet';
-  const INSTALLATION_BOARD_ID = await E(board).getId(installation);
-  console.log('- SUCCESS! contract code installed on Zoe');
-  console.log(`-- Contract Name: ${CONTRACT_NAME}`);
-  console.log(`-- Installation Board Id: ${INSTALLATION_BOARD_ID}`);
 
   // Save the constants somewhere where the UI and api can find it.
   const dappConstants = {
@@ -110,4 +135,6 @@ export default ${JSON.stringify(dappConstants, undefined, 2)};
 `;
   await fs.promises.mkdir(defaultsFolder, { recursive: true });
   await fs.promises.writeFile(defaultsFile, defaultsContents);
-}
+};
+
+export default deployContract;
