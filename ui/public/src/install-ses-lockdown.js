@@ -6,7 +6,6 @@ import '@agoric/eventual-send/shim'; // adds support needed by E
 // can still access powerful globals, but this start compartment can use `new Compartment(...)`
 // to evaluate code with stricter confinement.
 lockdown({
-  __allowUnsafeMonkeyPatching__: true,
   errorTaming: 'unsafe',
   overrideTaming: 'severe',
 });
