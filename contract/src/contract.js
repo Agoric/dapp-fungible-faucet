@@ -32,7 +32,7 @@ const start = async (zcf) => {
   const mintPayment = (seat) => {
     const amount = AmountMath.make(brand, 1000n);
     // Synchronously mint and allocate amount to seat.
-    zcfMint.mintGains({ Token: amount }, seat);
+    zcfMint.mintGains(harden({ Token: amount }), seat);
     // Exit the seat so that the user gets a payout.
     seat.exit();
     // Since the user is getting the payout through Zoe, we can
