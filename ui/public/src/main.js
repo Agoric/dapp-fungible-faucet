@@ -1,8 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 // @ts-check
 /* globals document mdc */
 import './install-ses-lockdown.js';
+import { E } from '@agoric/eventual-send';
+import { observeNotifier } from '@agoric/notifier';
 import dappConstants from '../lib/constants.js';
 import { connect } from './connect.js';
+import '@agoric/wallet-connection/agoric-wallet-connection.js';
 
 const {
   INVITE_BRAND_BOARD_ID,
@@ -16,9 +20,15 @@ export default async function main() {
   let zoeInvitationDepositFacetId;
   let apiSend;
   let tokenPursePetname = ['FungibleFaucet', 'Token'];
+  let walletP;
+  const offers = new Set();
 
   const $mintFungible = /** @type {HTMLInputElement} */ (document.getElementById(
     'mintFungible',
+  ));
+
+  const $walletStatus = /** @type {HTMLInputElement} */ (document.getElementById(
+    'wallet-status',
   ));
 
   const maybeEnableButtons = () => {
@@ -57,8 +67,7 @@ export default async function main() {
     document.querySelector('#approve-offer'),
   );
 
-  // The snackbar to approve the offer will be closed by code not timeout.
-  approveOfferSB.timeoutMs = -1;
+  approveOfferSB.timeoutMs = 4000;
 
   const gotPaymentSB = mdc.snackbar.MDCSnackbar.attachTo(
     document.querySelector('#got-payment'),
@@ -68,71 +77,88 @@ export default async function main() {
     document.querySelector('#open-wallet'),
   );
 
-  // eslint-disable-next-line no-unused-vars
-  const debugSwitch = new mdc.switchControl.MDCSwitch(
-    document.querySelector('.mdc-switch'),
-  );
+  const addOffer = async (offer) => {
+    const offerId = await E(walletP).addOffer(offer);
+    approveOfferSB.open();
+    offers.add(offerId);
+  };
 
-  /**
-   * @param {{ type: string; data: any; walletURL: string }} obj
-   */
-  const walletRecv = (obj) => {
-    switch (obj.type) {
-      case 'walletDepositFacetIdResponse': {
-        zoeInvitationDepositFacetId = obj.data;
-        maybeEnableButtons();
-        break;
-      }
-      case 'walletNeedDappApproval': {
-        approveDappDialog.open();
-        break;
-      }
-      case 'walletURL': {
-        // TODO: handle appropriately
-        break;
-      }
-      case 'walletUpdatePurses': {
-        // We find the first purse that can accept our token.
-        const purses = JSON.parse(obj.data);
-        const tokenPurse = purses.find(
-          // Does the purse's brand match our token brand?
-          ({ brandBoardId }) => brandBoardId === TOKEN_BRAND_BOARD_ID,
-        );
-        if (tokenPurse && tokenPurse.pursePetname) {
-          // If we got a petname for that purse, use it in the offers we create.
-          tokenPursePetname = tokenPurse.pursePetname;
-        }
-        break;
-      }
-      case 'walletSuggestIssuerResponse': {
-        // TODO: handle appropriately
-        break;
-      }
-      case 'walletSuggestInstallationResponse': {
-        // TODO: handle appropriately
-        break;
-      }
-      case 'walletSuggestInstanceResponse': {
-        // TODO: handle appropriately
-        break;
-      }
-      case 'walletOfferAdded': {
-        approveOfferSB.open();
-        break;
-      }
-      case 'walletOfferHandled': {
-        approveOfferSB.close();
-        break;
-      }
-      case 'walletOfferResult': {
+  // Gets the petname for the token purse that holds our token brand for use in offers.
+  const updateTokenPursePetname = (purses) => {
+    const tokenPurse = purses.find(
+      // Does the purse's brand match our token brand?
+      ({ brandBoardId }) => brandBoardId === TOKEN_BRAND_BOARD_ID,
+    );
+    if (tokenPurse && tokenPurse.pursePetname) {
+      // If we got a petname for that purse, use it in the offers we create.
+      tokenPursePetname = tokenPurse.pursePetname;
+    }
+  };
+
+  const getDepositFacetId = async () => {
+    zoeInvitationDepositFacetId = await E(walletP).getDepositFacetId(
+      INVITE_BRAND_BOARD_ID,
+    );
+    maybeEnableButtons();
+  };
+
+  const updateOfferSnackbars = (walletOffers) => {
+    for (const offerId of offers) {
+      const walletOffer = walletOffers.find((offer) => offer.id === offerId);
+
+      if (walletOffer && walletOffer.status === 'accept') {
         gotPaymentSB.open();
-        break;
-      }
-      default: {
-        throw Error(`unexpected walletRecv obj.type ${obj.type}`);
+        offers.delete(offerId);
       }
     }
   };
+
+  const setWalletP = (bridge) => {
+    if (walletP) {
+      return;
+    }
+    walletP = bridge;
+
+    observeNotifier(E(walletP).getPursesNotifier(), {
+      updateState: updateTokenPursePetname,
+    });
+
+    observeNotifier(E(walletP).getOffersNotifier(), {
+      updateState: updateOfferSnackbars,
+    });
+
+    getDepositFacetId();
+
+    E(walletP).suggestInstallation('Installation', INSTALLATION_BOARD_ID);
+    E(walletP).suggestInstance('Instance', INSTANCE_BOARD_ID);
+    E(walletP).suggestIssuer('Token', TOKEN_ISSUER_BOARD_ID);
+  };
+
+  const onWalletState = (ev) => {
+    const { walletConnection, state } = ev.detail;
+    $walletStatus.innerText = state;
+    switch (state) {
+      case 'idle': {
+        setWalletP(E(walletConnection).getScopedBridge('FungibleFaucet'));
+        break;
+      }
+      case 'approving': {
+        approveDappDialog.open();
+        break;
+      }
+      case 'error': {
+        console.log('error', ev.detail);
+        // In case of an error, reset to 'idle'.
+        // Backoff or other retry strategies would go here instead of immediate reset.
+        E(walletConnection).reset();
+        break;
+      }
+      default:
+    }
+  };
+
+  const awc = document.querySelector('agoric-wallet-connection');
+  awc.addEventListener('state', onWalletState);
 
   /**
    * @param {{ type: string; data: any; }} obj
@@ -146,10 +172,7 @@ export default async function main() {
         // acceptance/rejection.
         const { offer } = obj.data;
         // eslint-disable-next-line no-use-before-define
-        walletSend({
-          type: 'walletAddOffer',
-          data: offer,
-        });
+        addOffer(offer);
         break;
       }
       case 'CTP_DISCONNECT': {
@@ -161,38 +184,6 @@ export default async function main() {
       }
     }
   };
-
-  // All the "suggest" messages below are backward-compatible:
-  // the new wallet will confirm them with the user, but the old
-  // wallet will just ignore the messages and allow access immediately.
-  const walletSend = await connect(
-    'wallet',
-    walletRecv,
-    '?suggestedDappPetname=FungibleFaucet',
-    // eslint-disable-next-line no-shadow
-  ).then((walletSend) => {
-    walletSend({ type: 'walletGetPurses' });
-    walletSend({
-      type: 'walletGetDepositFacetId',
-      brandBoardId: INVITE_BRAND_BOARD_ID,
-    });
-    walletSend({
-      type: 'walletSuggestInstallation',
-      petname: 'Installation',
-      boardId: INSTALLATION_BOARD_ID,
-    });
-    walletSend({
-      type: 'walletSuggestInstance',
-      petname: 'Instance',
-      boardId: INSTANCE_BOARD_ID,
-    });
-    walletSend({
-      type: 'walletSuggestIssuer',
-      petname: 'Token',
-      boardId: TOKEN_ISSUER_BOARD_ID,
-    });
-    return walletSend;
-  });
 
   await connect('/api/fungible-faucet', apiRecv).then((rawApiSend) => {
     apiSend = rawApiSend;

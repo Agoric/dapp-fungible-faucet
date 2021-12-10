@@ -2,7 +2,6 @@
 /* globals document */
 import { rpc } from '../lib/socket.js';
 import { activateSocket as startApi } from '../lib/api-client.js';
-import { activateSocket as startBridge } from '../lib/wallet-client.js';
 
 const $messages = /** @type {HTMLDivElement} */ (document.getElementById(
   `messages`,
@@ -85,7 +84,7 @@ export const connect = (endpointPath, recv, query = '') => {
     resolve = res;
     reject = rej;
   });
-  const activator = endpointPath === 'wallet' ? startBridge : startApi;
+  const activator = startApi;
   activator(
     {
       onConnect() {
