@@ -1,6 +1,5 @@
 // @ts-check
 /* globals window, WebSocket */
-
 import { registerSocket, closeSocket, getActiveSocket } from './socket.js';
 
 import dappConstants from './constants.js';

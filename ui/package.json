@@ -49,6 +49,8 @@
     "regenerator-runtime": "0.13.7"
   },
   "devDependencies": {
+    "@agoric/notifier": "^0.3.32",
+    "@agoric/wallet-connection": "^0.1.2",
     "agoric": "*",
     "caniuse-lite": "1.0.30001251",
     "eslint": "^7.23.0",
@@ -60,6 +62,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
+    "lit": "^2.0.2",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "ses": "^0.14.2"
