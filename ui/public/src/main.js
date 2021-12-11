@@ -33,6 +33,26 @@ export default async function main() {
     'wallet-status',
   ));
 
+  const approveOfferSB = mdc.snackbar.MDCSnackbar.attachTo(
+    document.querySelector('#approve-offer'),
+  );
+
+  approveOfferSB.timeoutMs = 4000;
+
+  const gotPaymentSB = mdc.snackbar.MDCSnackbar.attachTo(
+    document.querySelector('#got-payment'),
+  );
+
+  const approveDappDialog = mdc.dialog.MDCDialog.attachTo(
+    document.querySelector('#open-wallet'),
+  );
+
+  const addOffer = async (offer) => {
+    const offerId = await E(walletP).addOffer(offer);
+    approveOfferSB.open();
+    offers.add(offerId);
+  };
+
   const enableButtons = () => {
     $mintFungible.removeAttribute('disabled');
     $mintFungible.addEventListener('click', async () => {
@@ -71,26 +91,6 @@ export default async function main() {
       await E(depositFacet).receive(invitation);
       addOffer(updatedOffer);
     });
-  };
-
-  const approveOfferSB = mdc.snackbar.MDCSnackbar.attachTo(
-    document.querySelector('#approve-offer'),
-  );
-
-  approveOfferSB.timeoutMs = 4000;
-
-  const gotPaymentSB = mdc.snackbar.MDCSnackbar.attachTo(
-    document.querySelector('#got-payment'),
-  );
-
-  const approveDappDialog = mdc.dialog.MDCDialog.attachTo(
-    document.querySelector('#open-wallet'),
-  );
-
-  const addOffer = async (offer) => {
-    const offerId = await E(walletP).addOffer(offer);
-    approveOfferSB.open();
-    offers.add(offerId);
   };
 
   // Gets the petname for the token purse that holds our token brand for use in offers.
