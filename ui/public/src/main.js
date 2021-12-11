@@ -5,22 +5,24 @@ import './install-ses-lockdown.js';
 import { E } from '@agoric/eventual-send';
 import { observeNotifier } from '@agoric/notifier';
 import dappConstants from '../lib/constants.js';
-import { connect } from './connect.js';
 import '@agoric/wallet-connection/agoric-wallet-connection.js';
 
 const {
   INVITE_BRAND_BOARD_ID,
   INSTANCE_BOARD_ID,
   INSTALLATION_BOARD_ID,
+  INVITATION_ISSUER_BOARD_ID,
   issuerBoardIds: { Token: TOKEN_ISSUER_BOARD_ID },
   brandBoardIds: { Token: TOKEN_BRAND_BOARD_ID },
 } = dappConstants;
 
 export default async function main() {
   let zoeInvitationDepositFacetId;
-  let apiSend;
   let tokenPursePetname = ['FungibleFaucet', 'Token'];
   let walletP;
+  let publicFacet;
+  let board;
+  let invitationIssuer;
   const offers = new Set();
 
   const $mintFungible = /** @type {HTMLInputElement} */ (document.getElementById(
@@ -31,12 +33,9 @@ export default async function main() {
     'wallet-status',
   ));
 
-  const maybeEnableButtons = () => {
-    if (!apiSend || !zoeInvitationDepositFacetId) {
-      return;
-    }
+  const enableButtons = () => {
     $mintFungible.removeAttribute('disabled');
-    $mintFungible.addEventListener('click', () => {
+    $mintFungible.addEventListener('click', async () => {
       const offer = {
         // JSONable ID for this offer.  This is scoped to the origin.
         id: Date.now(),
@@ -53,13 +52,24 @@ export default async function main() {
         // Tell the wallet that we're handling the offer result.
         dappContext: true,
       };
-      apiSend({
-        type: 'fungibleFaucet/sendInvitation',
-        data: {
-          depositFacetId: zoeInvitationDepositFacetId,
-          offer,
-        },
-      });
+
+      const depositFacet = E(board).getValue(zoeInvitationDepositFacetId);
+      const invitation = await E(publicFacet).makeInvitation();
+      const invitationAmount = await E(invitationIssuer).getAmountOf(
+        invitation,
+      );
+      const {
+        value: [{ handle }],
+      } = invitationAmount;
+      const invitationHandleBoardId = await E(board).getId(handle);
+      const updatedOffer = { ...offer, invitationHandleBoardId };
+
+      // We need to wait for the invitation to be
+      // received, or we will possibly win the race of
+      // proposing the offer before the invitation is ready.
+      // TODO: We should make this process more robust.
+      await E(depositFacet).receive(invitation);
+      addOffer(updatedOffer);
     });
   };
 
@@ -99,7 +109,6 @@ export default async function main() {
     zoeInvitationDepositFacetId = await E(walletP).getDepositFacetId(
       INVITE_BRAND_BOARD_ID,
     );
-    maybeEnableButtons();
   };
 
   const updateOfferSnackbars = (walletOffers) => {
@@ -113,7 +122,7 @@ export default async function main() {
     }
   };
 
-  const setWalletP = (bridge) => {
+  const setWalletP = async (bridge) => {
     if (walletP) {
       return;
     }
@@ -132,6 +141,13 @@ export default async function main() {
     E(walletP).suggestInstallation('Installation', INSTALLATION_BOARD_ID);
     E(walletP).suggestInstance('Instance', INSTANCE_BOARD_ID);
     E(walletP).suggestIssuer('Token', TOKEN_ISSUER_BOARD_ID);
+
+    const zoe = E(walletP).getZoe();
+    board = E(walletP).getBoard();
+    invitationIssuer = E(board).getValue(INVITATION_ISSUER_BOARD_ID);
+    const instance = await E(board).getValue(INSTANCE_BOARD_ID);
+    publicFacet = E(zoe).getPublicFacet(instance);
+    enableButtons();
   };
 
   const onWalletState = (ev) => {
@@ -159,36 +175,6 @@ export default async function main() {
 
   const awc = document.querySelector('agoric-wallet-connection');
   awc.addEventListener('state', onWalletState);
-
-  /**
-   * @param {{ type: string; data: any; }} obj
-   */
-  const apiRecv = (obj) => {
-    switch (obj.type) {
-      case 'fungibleFaucet/sendInvitationResponse': {
-        // Once the invitation has been sent to the user, we update the
-        // offer to include the invitationBoardId. Then we make a
-        // request to the user's wallet to send the proposed offer for
-        // acceptance/rejection.
-        const { offer } = obj.data;
-        // eslint-disable-next-line no-use-before-define
-        addOffer(offer);
-        break;
-      }
-      case 'CTP_DISCONNECT': {
-        // TODO: handle this appropriately
-        break;
-      }
-      default: {
-        throw Error(`unexpected apiRecv obj.type ${obj.type}`);
-      }
-    }
-  };
-
-  await connect('/api/fungible-faucet', apiRecv).then((rawApiSend) => {
-    apiSend = rawApiSend;
-    maybeEnableButtons();
-  });
 }
 
 main();

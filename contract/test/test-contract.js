@@ -26,19 +26,17 @@ test('zoe - mint payments', async (t) => {
   // install the contract
   const installation = E(zoe).install(bundle);
 
-  const { creatorFacet, instance } = await E(zoe).startInstance(installation);
+  const { publicFacet } = await E(zoe).startInstance(installation);
 
   // Alice makes an invitation for Bob that will give him 1000 tokens
-  const invitation = E(creatorFacet).makeInvitation();
+  const invitation = E(publicFacet).makeInvitation();
 
   // Bob makes an offer using the invitation
   const seat = E(zoe).offer(invitation);
-
   const paymentP = E(seat).getPayout('Token');
 
   // Let's get the tokenIssuer from the contract so we can evaluate
   // what we get as our payout
-  const publicFacet = E(zoe).getPublicFacet(instance);
   const tokenIssuer = E(publicFacet).getTokenIssuer();
   const tokenBrand = await E(tokenIssuer).getBrand();
 

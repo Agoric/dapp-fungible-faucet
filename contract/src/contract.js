@@ -40,23 +40,17 @@ const start = async (zcf) => {
     return 'Offer completed. You should receive a payment from Zoe';
   };
 
-  const creatorFacet = Far('creatorFacet', {
-    // The creator of the instance can send invitations to anyone
-    // they wish to.
-    makeInvitation: () => zcf.makeInvitation(mintPayment, 'mint a payment'),
-    getTokenIssuer: () => issuer,
-  });
-
   const publicFacet = Far('publicFacet', {
     // Make the token issuer public. Note that only the mint can
     // make new digital assets. The issuer is ok to make public.
     getTokenIssuer: () => issuer,
+    makeInvitation: () => zcf.makeInvitation(mintPayment, 'mint a payment'),
   });
 
   // Return the creatorFacet to the creator, so they can make
   // invitations for others to get payments of tokens. Publish the
   // publicFacet.
-  return harden({ creatorFacet, publicFacet });
+  return harden({ publicFacet });
 };
 
 harden(start);
