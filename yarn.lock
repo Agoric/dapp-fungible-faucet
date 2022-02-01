@@ -76,10 +76,10 @@
     rollup "^1.32.0"
     source-map "^0.7.3"
 
-"@agoric/captp@^1.10.7":
-  version "1.10.7"
-  resolved "https://registry.yarnpkg.com/@agoric/captp/-/captp-1.10.7.tgz#ec55ba550f21886fcf9a1eeb6abebecbdedf6dfc"
-  integrity sha512-fJirXSIR+OOp97wpaJ6LXS/E5mmFSoQypPQeKdYdERV8wQsY7bSjDMa2mfbqVKNDZ+txAzVvVXieASYet+GaUg==
+"@agoric/captp@^1.10.8":
+  version "1.10.8"
+  resolved "https://registry.yarnpkg.com/@agoric/captp/-/captp-1.10.8.tgz#c823f4edbe4c3acd80b6cfd87dbb42a5bf463138"
+  integrity sha512-eBW1ctzRpwhj+oIKgG4uo9HhFcB+RltUFf7cfiOEz+8ZV+/A4ZSjSe0uUYt/Fm9FBqGW0XclhqWIPWEBt4jggQ==
   dependencies:
     "@agoric/assert" "^0.3.15"
     "@agoric/eventual-send" "^0.14.0"
@@ -282,10 +282,10 @@
     "@agoric/eventual-send" "^0.11.1"
     "@agoric/promise-kit" "^0.1.6"
 
-"@agoric/notifier@^0.3.32":
-  version "0.3.32"
-  resolved "https://registry.yarnpkg.com/@agoric/notifier/-/notifier-0.3.32.tgz#62be82f43564ec3ab986e6ea1c7d2021adbb5d51"
-  integrity sha512-Z/1Azmis9V7pxSlMBCuJE7fXA0zXLc30S0tkJShp9WpyX0wZduLh6eeBqF1HS1JwE793BawIY1nvRNvGpJkr8Q==
+"@agoric/notifier@^0.3.33":
+  version "0.3.33"
+  resolved "https://registry.yarnpkg.com/@agoric/notifier/-/notifier-0.3.33.tgz#28476cef31bffa4ed5a33fe66660617c8c527d77"
+  integrity sha512-PtGyigl9KY4NVmXK3Yjcev2JI4SbGBhz+rbtESNhf9BJh1p6TZ+8NGrPxZwA1qqvBY8E4/fSRqizl1WFgRG/Wg==
   dependencies:
     "@agoric/assert" "^0.3.15"
     "@agoric/eventual-send" "^0.14.0"
@@ -439,13 +439,20 @@
   resolved "https://registry.yarnpkg.com/@agoric/transform-module/-/transform-module-0.4.1.tgz#9fb152364faf372e1bda535cb4ef89717724f57c"
   integrity sha512-4TJJHXeXAWu1FCA7yXCAZmhBNoGTB/BEAe2pv+J2X8W/mJTr9b395OkDCSRMpzvmSshLfBx6wT0D7dqWIWEC1w==
 
-"@agoric/wallet-connection@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@agoric/wallet-connection/-/wallet-connection-0.1.2.tgz#b306eea3a9af460b26cc9ec314a5d11e46af1d8d"
-  integrity sha512-jxserbswPmv7YYnHdeIdemlR44pA1SsqVkdOKVGkINF+GWWmqDSoWtfKmHkdc3DQ/avcjQWUq91lha7GVYClcA==
+"@agoric/wallet-connection@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@agoric/wallet-connection/-/wallet-connection-0.1.4.tgz#0abf8599ad32128cc7a1062bfb03cf033baac1ce"
+  integrity sha512-v9i02Jh5dpX96SCQ9SRibQ97wZgMXKeln/HmoJNaKnSMtVy4VVOxoBbBFu8Rh0pCf9+1vPiAu5SR4n6kxOrK6Q==
+  dependencies:
+    "@agoric/web-components" "^0.1.3"
+
+"@agoric/web-components@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@agoric/web-components/-/web-components-0.1.3.tgz#bb3269f856b1c9aa56253c5d9aef80b452764eff"
+  integrity sha512-Okz6NOfokhX0Pgd+zbMpuBbcvyUTaV0x7mJsp6OG1EbssxgFHlra6G7uTIvN2UKlvibgjruksYpRvq8o7OgpOg==
   dependencies:
     "@agoric/assert" "^0.3.15"
-    "@agoric/captp" "^1.10.7"
+    "@agoric/captp" "^1.10.8"
     "@agoric/marshal" "^0.5.0"
     "@agoric/promise-kit" "^0.2.29"
     robot3 "^0.2.19"
@@ -1387,12 +1394,48 @@
   resolved "https://registry.yarnpkg.com/@endo/base64/-/base64-0.1.0.tgz#d321d5b36f16648f0b0b05d96f93501d6a461501"
   integrity sha512-wVBsKkVV3t3mGT1XVoQAYkBpnum/OEJ0kBka3s7PSQnAne0aFmi1P9IIWyHzsoIgdai7ONTpGSgBZIk6X9dOrw==
 
+"@endo/captp@1.10.12":
+  version "1.10.12"
+  resolved "https://registry.yarnpkg.com/@endo/captp/-/captp-1.10.12.tgz#69ce23a49ecfdf0bad84f931a55df797d2cfd0ed"
+  integrity sha512-tdughHAu1V8+NyXikrEXJfyyq/+CIcsAx9dQ3ZWf34c7gYJPSQtaDFCheDmNwDoVBn1SMGg+8cVjSmbJe8pWtw==
+  dependencies:
+    "@endo/eventual-send" "^0.14.4"
+    "@endo/marshal" "^0.5.4"
+    "@endo/nat" "^4.1.4"
+    "@endo/promise-kit" "^0.2.33"
+
 "@endo/eslint-plugin@^0.3.10":
   version "0.3.10"
   resolved "https://registry.yarnpkg.com/@endo/eslint-plugin/-/eslint-plugin-0.3.10.tgz#e51f4ef8dae474d396b6a98a9ea9bbc983e90c57"
   integrity sha512-zr0S9NVxY+MiHKmc5m+O5mydm2owfkp15W9JP7EQvZ4qMDlOy30qns0o7dKrk4WGloQHfMqqLdOkCYeKUGKSAQ==
   dependencies:
     requireindex "~1.1.0"
+
+"@endo/eventual-send@^0.14.4":
+  version "0.14.4"
+  resolved "https://registry.yarnpkg.com/@endo/eventual-send/-/eventual-send-0.14.4.tgz#40f2c7fd64d66e1ed5eaf15a90d6d689af13eb36"
+  integrity sha512-1MSnq7bcCustCIKB7TJ1cfCg7A0W/LmX9bxhIV1syG7TO3mgV1DX7YceU0Ek+JDlqR3x9cM12WeaXfM+1ggfKg==
+
+"@endo/marshal@^0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@endo/marshal/-/marshal-0.5.4.tgz#3e96a421afe56846086fcee569be41f80e7e2ec5"
+  integrity sha512-ojcScWANmoiWfFH7iRUak+QOviXVS6Ubznj3fzXPizszjX8/M/67/XSbzbRdLYlevChzEtP60xhbYZPxzJSHRw==
+  dependencies:
+    "@endo/eventual-send" "^0.14.4"
+    "@endo/nat" "^4.1.4"
+    "@endo/promise-kit" "^0.2.33"
+
+"@endo/nat@^4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@endo/nat/-/nat-4.1.4.tgz#7e9c45817b6ddb0332a115600b6e52d500efe9c7"
+  integrity sha512-HfgDO3JJNKxE597v8dg0o2wVYCSmfVVF2dhza/i+j8o28gUyxZxrRlxpDWaCT44o3XpIQSepfePrqjyLGkfEcQ==
+
+"@endo/promise-kit@^0.2.33":
+  version "0.2.33"
+  resolved "https://registry.yarnpkg.com/@endo/promise-kit/-/promise-kit-0.2.33.tgz#dd5f8d810fef6e1370ff7dfe2d95d884961840c5"
+  integrity sha512-Bxt3jRB9iN7WOwiVxV2FmfBX2BfK3ffkcEhsxhnMBS8PEqVJ6M/Y+K2nV/b8v18/N7U5RA8UHY6IdRxyKjQ5Jw==
+  dependencies:
+    ses "^0.15.7"
 
 "@eslint/eslintrc@^0.4.0":
   version "0.4.0"
@@ -7708,10 +7751,15 @@ ses@^0.12.6:
     "@agoric/make-hardener" "^0.1.2"
     "@agoric/transform-module" "^0.4.1"
 
-ses@^0.14.1, ses@^0.14.2:
+ses@^0.14.1:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/ses/-/ses-0.14.2.tgz#3dd62c1779cc9ee5df506d7b1a40fe514ba541e1"
   integrity sha512-RKAOt8KxkJJyclwfd0mQ6GtmIyYUOrDew7DwKM6DTWY8f9u1eDJccpHXvxDhpXDcWlJ40dtC/FCx12BFZuGPng==
+
+ses@^0.15.7:
+  version "0.15.7"
+  resolved "https://registry.yarnpkg.com/ses/-/ses-0.15.7.tgz#53da049638bb34941befd1eccf34647c950f91a2"
+  integrity sha512-WqEanVAU/zMSoR/c/bHrAHTD7wMPm4zQrVCSXuzHxuvq4mM0xdrK/rEgQ35zQh7IyIg2n/aKDJWv3CL1quiJFA==
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"

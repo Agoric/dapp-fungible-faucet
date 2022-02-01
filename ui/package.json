@@ -44,14 +44,15 @@
     "watcherGlob": "**/*.html"
   },
   "dependencies": {
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-static-files-copy": "^2.5.0",
-    "regenerator-runtime": "0.13.7"
+    "@agoric/notifier": "^0.3.33",
+    "@agoric/wallet-connection": "^0.1.4",
+    "@endo/captp": "1.10.12",
+    "@endo/marshal": "^0.5.4",
+    "lit": "^2.0.2",
+    "regenerator-runtime": "0.13.7",
+    "ses": "^0.15.7"
   },
   "devDependencies": {
-    "@agoric/notifier": "^0.3.32",
-    "@agoric/wallet-connection": "^0.1.2",
-    "agoric": "*",
     "caniuse-lite": "1.0.30001251",
     "eslint": "^7.23.0",
     "eslint-config-airbnb": "^18.2.0",
@@ -62,10 +63,10 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
-    "lit": "^2.0.2",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.5.0",
     "prettier": "^2.1.2",
-    "rimraf": "^3.0.2",
-    "ses": "^0.14.2"
+    "rimraf": "^3.0.2"
   },
   "prettier": {
     "trailingComma": "all",
