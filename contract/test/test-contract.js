@@ -3,9 +3,9 @@
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 import path from 'path';
 
-import bundleSource from '@agoric/bundle-source';
+import bundleSource from '@endo/bundle-source';
 
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
 import { makeZoeKit } from '@agoric/zoe';
 import { AmountMath } from '@agoric/ertp';

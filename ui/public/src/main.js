@@ -2,7 +2,7 @@
 // @ts-check
 /* globals document mdc */
 import './install-ses-lockdown.js';
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 import { observeNotifier } from '@agoric/notifier';
 import dappConstants from '../lib/constants.js';
 import { connect } from './connect.js';
