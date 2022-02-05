@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import '@agoric/zoe/exported.js';
-import { E } from '@agoric/eventual-send';
+import { E } from '@endo/eventual-send';
 
 import { pursePetnames } from './petnames.js';
 
@@ -12,7 +12,7 @@ import { pursePetnames } from './petnames.js';
 
 /**
  * @template T
- * @typedef {import('@agoric/eventual-send').ERef<T>} ERef
+ * @typedef {import('@endo/eventual-send').ERef<T>} ERef
  */
 
 /**

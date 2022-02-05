@@ -46,7 +46,7 @@
   "dependencies": {
     "@agoric/notifier": "^0.3.33",
     "@agoric/wallet-connection": "^0.1.4",
-    "@endo/captp": "1.10.12",
+    "@endo/captp": "^1.10.12",
     "@endo/marshal": "^0.5.4",
     "lit": "^2.0.2",
     "regenerator-runtime": "0.13.7",

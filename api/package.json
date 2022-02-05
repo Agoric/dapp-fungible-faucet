@@ -24,9 +24,9 @@
     "prettier": "^2.1.2"
   },
   "dependencies": {
-    "@agoric/eventual-send": "*",
-    "@agoric/marshal": "*",
-    "@agoric/zoe": "*"
+    "@endo/eventual-send": "^0.14.4",
+    "@endo/marshal": "^0.5.4",
+    "@agoric/zoe": "dev"
   },
   "eslintConfig": {
     "extends": [

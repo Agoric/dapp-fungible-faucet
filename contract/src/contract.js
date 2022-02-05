@@ -1,7 +1,7 @@
 // @ts-check
 import '@agoric/zoe/exported.js';
 import { AmountMath } from '@agoric/ertp';
-import { Far } from '@agoric/marshal';
+import { Far } from '@endo/marshal';
 
 /**
  * This is a very simple contract that creates a new issuer and mints payments

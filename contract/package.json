@@ -24,15 +24,16 @@
     "ava": "^3.13.0"
   },
   "dependencies": {
-    "@agoric/bundle-source": "*",
-    "@agoric/assert": "*",
-    "@agoric/ertp": "*",
-    "@agoric/eventual-send": "*",
-    "@agoric/install-ses": "*",
-    "@agoric/marshal": "*",
-    "@agoric/notifier": "*",
-    "@agoric/store": "*",
-    "@agoric/zoe": "*"
+    "@agoric/babel-standalone": "^7.14.3",
+    "@endo/bundle-source": "^2.0.5",
+    "@agoric/assert": "dev",
+    "@agoric/ertp": "dev",
+    "@endo/eventual-send": "^0.14.4",
+    "@endo/init": "^0.5.33",
+    "@endo/marshal": "^0.5.4",
+    "@agoric/notifier": "dev",
+    "@agoric/store": "dev",
+    "@agoric/zoe": "dev"
   },
   "ava": {
     "files": [

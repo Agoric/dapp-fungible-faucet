@@ -4,8 +4,8 @@
 // This functionality will later be merged into the agoric-sdk.
 
 // @ts-check
-import { E } from '@agoric/eventual-send';
-import { Far } from '@agoric/marshal';
+import { E } from '@endo/eventual-send';
+import { Far } from '@endo/marshal';
 
 export const makeWebSocketHandler = (http, makeConnectionHandler) => {
   return Far('commandHandler', {
