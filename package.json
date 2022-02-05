@@ -35,7 +35,7 @@
     "build": "yarn workspaces run build"
   },
   "dependencies": {
-    "agoric": "*"
+    "agoric": "dev"
   },
   "ava": {
     "files": [
