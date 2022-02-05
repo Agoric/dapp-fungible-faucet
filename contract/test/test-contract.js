@@ -1,5 +1,7 @@
 // @ts-check
 
+import '@agoric/babel-standalone';
+
 import { test } from '@agoric/zoe/tools/prepare-test-env-ava.js';
 import path from 'path';
 

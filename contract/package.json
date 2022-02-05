@@ -24,6 +24,7 @@
     "ava": "^3.13.0"
   },
   "dependencies": {
+    "@agoric/babel-standalone": "^7.14.3",
     "@endo/bundle-source": "^2.0.5",
     "@agoric/assert": "dev",
     "@agoric/ertp": "dev",
