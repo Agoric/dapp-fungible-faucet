@@ -24,12 +24,12 @@
     "ava": "^3.13.0"
   },
   "dependencies": {
-    "@endo/bundle-source": "*",
+    "@endo/bundle-source": "^2.0.5",
     "@agoric/assert": "*",
     "@agoric/ertp": "*",
-    "@endo/eventual-send": "*",
-    "@endo/init": "*",
-    "@endo/marshal": "*",
+    "@endo/eventual-send": "^0.14.4",
+    "@endo/init": "^0.5.33",
+    "@endo/marshal": "^0.5.4",
     "@agoric/notifier": "*",
     "@agoric/store": "*",
     "@agoric/zoe": "*"
