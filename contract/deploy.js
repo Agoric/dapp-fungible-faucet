@@ -3,6 +3,7 @@
 import fs from 'fs';
 import '@agoric/zoe/exported.js';
 import { E } from '@endo/eventual-send';
+import bundleSource from '@endo/bundle-source';
 
 import { pursePetnames } from './petnames.js';
 
@@ -17,7 +18,6 @@ import { pursePetnames } from './petnames.js';
 
 /**
  * @typedef {Object} DeployPowers The special powers that agoric deploy gives us
- * @property {(path: string) => Promise<{ moduleFormat: string, source: string }>} bundleSource
  * @property {(path: string) => string} pathResolve
  *
  * @typedef {Object} Board
@@ -28,13 +28,12 @@ import { pursePetnames } from './petnames.js';
  */
 
 /**
- * @param {(path: string) => Promise<{ moduleFormat: string, source: string }>} bundleSource
  * @param {(path: string) => string} pathResolve
  * @param {ERef<ZoeService>} zoe
  * @param {ERef<Board>} board
  * @returns {Promise<{ CONTRACT_NAME: string, INSTALLATION_BOARD_ID: string }>}
  */
-const installBundle = async (bundleSource, pathResolve, zoe, board) => {
+const installBundle = async (pathResolve, zoe, board) => {
   // We must bundle up our contract code (./src/contract.js)
   // and install it on Zoe. This returns an installationHandle, an
   // opaque, unforgeable identifier for our contract code that we can
@@ -79,7 +78,7 @@ const sendDeposit = async (wallet, faucet) => {
  * Object, wallet: ERef<Object>, faucet: ERef<Object>}>} homePromise
  * @param {DeployPowers} powers
  */
-const deployContract = async (homePromise, { bundleSource, pathResolve }) => {
+const deployContract = async (homePromise, { pathResolve }) => {
   // Your off-chain machine (what we call an ag-solo) starts off with
   // a number of references, some of which are shared objects on chain, and
   // some of which are objects that only exist on your machine.
@@ -113,7 +112,6 @@ const deployContract = async (homePromise, { bundleSource, pathResolve }) => {
 
   await sendDeposit(wallet, faucet);
   const { CONTRACT_NAME, INSTALLATION_BOARD_ID } = await installBundle(
-    bundleSource,
     pathResolve,
     zoe,
     board,
