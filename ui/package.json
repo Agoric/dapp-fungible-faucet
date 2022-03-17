@@ -44,28 +44,28 @@
     "watcherGlob": "**/*.html"
   },
   "dependencies": {
-    "@agoric/notifier": "^0.3.33",
-    "@agoric/wallet-connection": "^0.1.4",
-    "@endo/captp": "^1.10.12",
-    "@endo/marshal": "^0.5.4",
+    "@agoric/notifier": "^0.3.35",
+    "@agoric/wallet-connection": "^0.1.5",
+    "@endo/captp": "^2.0.3",
+    "@endo/marshal": "^0.6.3",
     "lit": "^2.0.2",
     "regenerator-runtime": "0.13.7",
-    "ses": "^0.15.7"
+    "ses": "^0.15.11"
   },
   "devDependencies": {
     "caniuse-lite": "1.0.30001251",
-    "eslint": "^7.23.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.21.4",
-    "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-eslint-comments": "^3.1.2",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.5.0",
-    "prettier": "^2.1.2",
+    "prettier": "^2.5.1",
     "rimraf": "^3.0.2"
   },
   "prettier": {
