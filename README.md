@@ -8,13 +8,13 @@ click the "Mint Fungible Tokens" button.
 Install the [prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric.html). Then checkout the latest `beta` release for the sdk:
 ```sh
 cd agoric-sdk
-git checkout -b beta agoricdev-8
+git checkout beta
 yarn && yarn build
 ```
 
 Then in a first terminal in the directory where you want to put your dapp, install the dapp:
 ```sh
-agoric init --dapp-template dapp-fungible-faucet my-fungible-faucet
+agoric init --dapp-template dapp-fungible-faucet --dapp-branch beta my-fungible-faucet
 cd my-fungible-faucet
 # Start the Agoric platform
 agoric install && agoric start --reset
