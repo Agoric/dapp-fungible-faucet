@@ -26,7 +26,7 @@
   "dependencies": {
     "@endo/eventual-send": "^0.14.8",
     "@endo/marshal": "^0.6.3",
-    "@agoric/zoe": "^0.21.3"
+    "@agoric/zoe": "dev"
   },
   "eslintConfig": {
     "extends": [

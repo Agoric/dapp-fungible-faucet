@@ -25,14 +25,14 @@
   },
   "dependencies": {
     "@endo/bundle-source": "^2.1.1",
-    "@agoric/assert": "^0.3.16",
-    "@agoric/ertp": "^0.13.3",
+    "@agoric/assert": "dev",
+    "@agoric/ertp": "dev",
     "@endo/eventual-send": "^0.14.8",
     "@endo/init": "^0.5.37",
     "@endo/marshal": "^0.6.3",
-    "@agoric/notifier": "^0.3.35",
-    "@agoric/store": "^0.6.10",
-    "@agoric/zoe": "^0.21.3"
+    "@agoric/notifier": "dev",
+    "@agoric/store": "dev",
+    "@agoric/zoe": "dev"
   },
   "ava": {
     "files": [
