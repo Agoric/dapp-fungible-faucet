@@ -58,22 +58,6 @@ const installBundle = async (pathResolve, zoe, board) => {
 };
 
 /**
- * @param {ERef<Object>} wallet
- * @param {ERef<Object>} faucet
- */
-const sendDeposit = async (wallet, faucet) => {
-  // We must first fund our "feePurse", the purse that we will use to
-  // pay for our interactions with Zoe.
-  const RUNPurse = E(wallet).getPurse(pursePetnames.RUN);
-  const runAmount = await E(RUNPurse).getCurrentAmount();
-  const feePurse = E(faucet).getFeePurse();
-  const feePayment = await E(E(wallet).getPurse(pursePetnames.RUN)).withdraw(
-    runAmount,
-  );
-  await E(feePurse).deposit(feePayment);
-};
-
-/**
  * @param {Promise<{zoe: ERef<ZoeService>, board: ERef<Board>, agoricNames:
  * Object, wallet: ERef<Object>, faucet: ERef<Object>}>} homePromise
  * @param {DeployPowers} powers
@@ -110,7 +94,6 @@ const deployContract = async (homePromise, { pathResolve }) => {
     faucet,
   } = home;
 
-  await sendDeposit(wallet, faucet);
   const { CONTRACT_NAME, INSTALLATION_BOARD_ID } = await installBundle(
     pathResolve,
     zoe,
