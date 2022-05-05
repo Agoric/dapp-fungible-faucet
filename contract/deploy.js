@@ -5,8 +5,6 @@ import '@agoric/zoe/exported.js';
 import { E } from '@endo/eventual-send';
 import bundleSource from '@endo/bundle-source';
 
-import { pursePetnames } from './petnames.js';
-
 // This script takes our contract code, installs it on Zoe, and makes
 // the installation publicly available. Our backend API script will
 // use this installation in a later step.
@@ -86,12 +84,6 @@ const deployContract = async (homePromise, { pathResolve }) => {
     // have a one-to-one bidirectional mapping. If a value is added a
     // second time, the original id is just returned.
     board,
-
-    // The wallet holds and manages assets for the user.
-    wallet,
-
-    // The faucet provides an initial amount of RUN for the user to use.
-    faucet,
   } = home;
 
   const { CONTRACT_NAME, INSTALLATION_BOARD_ID } = await installBundle(
