@@ -5,8 +5,6 @@ import '@agoric/zoe/exported.js';
 import { E } from '@endo/eventual-send';
 import bundleSource from '@endo/bundle-source';
 
-import { pursePetnames } from './petnames.js';
-
 // This script takes our contract code, installs it on Zoe, and makes
 // the installation publicly available. Our backend API script will
 // use this installation in a later step.
@@ -58,22 +56,6 @@ const installBundle = async (pathResolve, zoe, board) => {
 };
 
 /**
- * @param {ERef<Object>} wallet
- * @param {ERef<Object>} faucet
- */
-const sendDeposit = async (wallet, faucet) => {
-  // We must first fund our "feePurse", the purse that we will use to
-  // pay for our interactions with Zoe.
-  const RUNPurse = E(wallet).getPurse(pursePetnames.RUN);
-  const runAmount = await E(RUNPurse).getCurrentAmount();
-  const feePurse = E(faucet).getFeePurse();
-  const feePayment = await E(E(wallet).getPurse(pursePetnames.RUN)).withdraw(
-    runAmount,
-  );
-  await E(feePurse).deposit(feePayment);
-};
-
-/**
  * @param {Promise<{zoe: ERef<ZoeService>, board: ERef<Board>, agoricNames:
  * Object, wallet: ERef<Object>, faucet: ERef<Object>}>} homePromise
  * @param {DeployPowers} powers
@@ -102,15 +84,8 @@ const deployContract = async (homePromise, { pathResolve }) => {
     // have a one-to-one bidirectional mapping. If a value is added a
     // second time, the original id is just returned.
     board,
-
-    // The wallet holds and manages assets for the user.
-    wallet,
-
-    // The faucet provides an initial amount of RUN for the user to use.
-    faucet,
   } = home;
 
-  await sendDeposit(wallet, faucet);
   const { CONTRACT_NAME, INSTALLATION_BOARD_ID } = await installBundle(
     pathResolve,
     zoe,
