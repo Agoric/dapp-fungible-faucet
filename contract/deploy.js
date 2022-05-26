@@ -17,27 +17,31 @@ import bundleSource from '@endo/bundle-source';
 /**
  * @typedef {Object} DeployPowers The special powers that agoric deploy gives us
  * @property {(path: string) => string} pathResolve
+ * @property {(bundle: unknown) => any} publishBundle
  *
  * @typedef {Object} Board
- * @property {(id: string) => any} getValue
- * @property {(value: any) => string} getId
- * @property {(value: any) => boolean} has
+ * @property {(id: string) => unknown} getValue
+ * @property {(value: unknown) => string} getId
+ * @property {(value: unknown) => boolean} has
  * @property {() => [string]} ids
  */
 
 /**
- * @param {(path: string) => string} pathResolve
+ * @param {DeployPowers} powers
  * @param {ERef<ZoeService>} zoe
  * @param {ERef<Board>} board
  * @returns {Promise<{ CONTRACT_NAME: string, INSTALLATION_BOARD_ID: string }>}
  */
-const installBundle = async (pathResolve, zoe, board) => {
+const installBundle = async (powers, zoe, board) => {
+  const { pathResolve, publishBundle } = powers;
   // We must bundle up our contract code (./src/contract.js)
   // and install it on Zoe. This returns an installationHandle, an
   // opaque, unforgeable identifier for our contract code that we can
   // reuse again and again to create new, live contract instances.
   const bundle = await bundleSource(pathResolve(`./src/contract.js`));
-  const installation = await E(zoe).install(bundle);
+
+  const hashedBundle = await publishBundle(bundle);
+  const installation = await E(zoe).install(hashedBundle);
 
   // Let's share this installation with other people, so that
   // they can run our contract code by making a contract
@@ -60,7 +64,7 @@ const installBundle = async (pathResolve, zoe, board) => {
  * Object, wallet: ERef<Object>, faucet: ERef<Object>}>} homePromise
  * @param {DeployPowers} powers
  */
-const deployContract = async (homePromise, { pathResolve }) => {
+const deployContract = async (homePromise, { pathResolve, publishBundle }) => {
   // Your off-chain machine (what we call an ag-solo) starts off with
   // a number of references, some of which are shared objects on chain, and
   // some of which are objects that only exist on your machine.
@@ -87,7 +91,10 @@ const deployContract = async (homePromise, { pathResolve }) => {
   } = home;
 
   const { CONTRACT_NAME, INSTALLATION_BOARD_ID } = await installBundle(
-    pathResolve,
+    {
+      pathResolve,
+      publishBundle,
+    },
     zoe,
     board,
   );
