@@ -44,8 +44,8 @@
     "watcherGlob": "**/*.html"
   },
   "dependencies": {
-    "@agoric/notifier": "^0.3.35",
-    "@agoric/wallet-connection": "^0.1.5",
+    "@agoric/notifier": "beta",
+    "@agoric/wallet-connection": "beta",
     "@endo/captp": "^2.0.3",
     "@endo/marshal": "^0.6.3",
     "lit": "^2.0.2",
@@ -63,7 +63,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "parcel-bundler": "^1.12.4",
+    "parcel": "^2.0.0",
     "parcel-plugin-static-files-copy": "^2.5.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2"
