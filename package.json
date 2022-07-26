@@ -24,7 +24,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "prettier": "^2.5.1",
+    "prettier": "^2.7.1",
     "@agoric/solo": "beta",
     "@agoric/cosmic-swingset": "beta"
   },
@@ -44,6 +44,11 @@
       "integration-test/**/test-*.mjs"
     ],
     "timeout": "20m"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@agoric"
+    ]
   },
   "prettier": {
     "trailingComma": "all",
