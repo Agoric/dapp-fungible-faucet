@@ -18,14 +18,14 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-jessie": "^0.0.6",
     "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-jsdoc": "^37.9.7",
+    "eslint-plugin-jsdoc": "^39.3.3",
     "prettier": "^2.5.1"
   },
   "dependencies": {
-    "@endo/eventual-send": "^0.14.8",
-    "@endo/marshal": "^0.6.3",
+    "@endo/eventual-send": "^0.15.5",
+    "@endo/marshal": "^0.6.9",
     "@agoric/zoe": "beta"
   },
   "eslintConfig": {
