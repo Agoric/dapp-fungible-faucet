@@ -1,7 +1,5 @@
 // @ts-check
 
-/* global process */
-
 // Agoric Dapp api deployment script
 
 import fs from 'fs';
@@ -15,12 +13,11 @@ import installationConstants from '../ui/public/conf/installationConstants.js';
 // script ends, connections to any of its objects are severed.
 
 /**
- * @typedef {Object} DeployPowers The special powers that `agoric deploy` gives us
+ * @typedef {object} DeployPowers The special powers that `agoric deploy` gives us
  * @property {(path: string) => Promise<{ moduleFormat: string, source: string }>} bundleSource
  * @property {(path: string) => string} pathResolve
  * @property {(path: string, opts?: any) => Promise<any>} installUnsafePlugin
- *
- * @typedef {Object} Board
+ * @typedef {object} Board
  * @property {(id: string) => any} getValue
  * @property {(value: any) => string} getId
  * @property {(value: any) => boolean} has
@@ -104,15 +101,12 @@ export default async function deployApi(
 
   const invitationIssuer = await invitationIssuerP;
 
-  const [
-    INSTANCE_BOARD_ID,
-    TOKEN_BRAND_BOARD_ID,
-    TOKEN_ISSUER_BOARD_ID,
-  ] = await Promise.all([
-    E(board).getId(instance),
-    E(board).getId(tokenBrand),
-    E(board).getId(tokenIssuer),
-  ]);
+  const [INSTANCE_BOARD_ID, TOKEN_BRAND_BOARD_ID, TOKEN_ISSUER_BOARD_ID] =
+    await Promise.all([
+      E(board).getId(instance),
+      E(board).getId(tokenBrand),
+      E(board).getId(tokenIssuer),
+    ]);
 
   console.log(`-- Contract Name: ${CONTRACT_NAME}`);
   console.log(`-- INSTANCE_BOARD_ID: ${INSTANCE_BOARD_ID}`);

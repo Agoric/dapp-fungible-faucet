@@ -1,9 +1,9 @@
 export const pursePetnames = {
-  RUN: 'Agoric RUN currency',
+  IST: 'Agoric IST currency',
   BLD: 'Agoric staking token',
 };
 
 export const issuerPetnames = {
-  RUN: 'RUN',
+  IST: 'IST',
   BLD: 'BLD',
 };

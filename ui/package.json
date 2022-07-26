@@ -47,7 +47,7 @@
     "@agoric/notifier": "beta",
     "@agoric/wallet-connection": "beta",
     "@endo/captp": "^2.0.3",
-    "@endo/marshal": "^0.6.3",
+    "@endo/marshal": "^0.6.9",
     "lit": "^2.0.2",
     "regenerator-runtime": "0.13.7",
     "ses": "^0.15.11"
@@ -58,7 +58,7 @@
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",

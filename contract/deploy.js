@@ -15,10 +15,9 @@ import bundleSource from '@endo/bundle-source';
  */
 
 /**
- * @typedef {Object} DeployPowers The special powers that agoric deploy gives us
+ * @typedef {object} DeployPowers The special powers that agoric deploy gives us
  * @property {(path: string) => string} pathResolve
- *
- * @typedef {Object} Board
+ * @typedef {object} Board
  * @property {(id: string) => any} getValue
  * @property {(value: any) => string} getId
  * @property {(value: any) => boolean} has
@@ -57,7 +56,7 @@ const installBundle = async (pathResolve, zoe, board) => {
 
 /**
  * @param {Promise<{zoe: ERef<ZoeService>, board: ERef<Board>, agoricNames:
- * Object, wallet: ERef<Object>, faucet: ERef<Object>}>} homePromise
+ * object, wallet: ERef<object>, faucet: ERef<object>}>} homePromise
  * @param {DeployPowers} powers
  */
 const deployContract = async (homePromise, { pathResolve }) => {
