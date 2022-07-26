@@ -1,4 +1,5 @@
 // @ts-check
+/* global harden */
 import { E } from '@endo/eventual-send';
 import { makeWebSocketHandler } from './lib-http.js';
 

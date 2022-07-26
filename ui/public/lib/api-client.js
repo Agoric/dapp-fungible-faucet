@@ -16,7 +16,7 @@ function getWebSocketEndpoint(endpoint) {
 }
 
 /**
- * @typedef {Object} SocketHandler
+ * @typedef {object} SocketHandler
  * @property {() => void} [onConnect]
  * @property {(msg: Record<string, unknown>) => void} [onMessage]
  * @property {() => void} [onDisconnect]
