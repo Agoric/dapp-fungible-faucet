@@ -1,5 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { test } from '@agoric/swingset-vat/tools/prepare-test-env-ava.js';
+/* eslint-disable import/order -- https://github.com/endojs/endo/issues/1235 */
+import { test } from '../contract/test/prepare-test-env-ava.js';
 
 import { gettingStartedWorkflowTest } from 'agoric/tools/getting-started.js';
 
