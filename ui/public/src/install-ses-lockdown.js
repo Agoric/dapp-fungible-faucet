@@ -7,7 +7,7 @@ import '@endo/eventual-send/shim'; // adds support needed by E
 // can still access powerful globals, but this start compartment can use `new Compartment(...)`
 // to evaluate code with stricter confinement.
 lockdown({
-  errorTaming: 'unsafe',
+  errorTaming: 'unsafe', // TODO Wen safe?
   overrideTaming: 'severe',
 });
 
