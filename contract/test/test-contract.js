@@ -17,10 +17,7 @@ const dirname = path.dirname(filename);
 const contractPath = `${dirname}/../src/contract.js`;
 
 test('zoe - mint payments', async (t) => {
-  const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
-  const feePurse = E(zoeService).makeFeePurse();
-  const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
-
+  const { zoeService: zoe } = makeZoeKit(makeFakeVatAdmin().admin);
   // pack the contract
   const bundle = await bundleSource(contractPath);
 
