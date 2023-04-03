@@ -6,3 +6,4 @@ _agstate/yarn-links/
 .parcel-cache/
 ui/.cache/
 ui/dist/
+ui/public/conf/

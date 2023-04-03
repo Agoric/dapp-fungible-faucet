@@ -2,6 +2,7 @@
 // @ts-check
 /* globals document mdc */
 import './install-ses-lockdown.js';
+import '@endo/eventual-send/shim'; // adds support needed by E
 import { E } from '@endo/eventual-send';
 import { observeNotifier } from '@agoric/notifier';
 import dappConstants from '../lib/constants.js';

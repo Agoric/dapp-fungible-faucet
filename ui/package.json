@@ -50,7 +50,7 @@
     "@endo/marshal": "^0.6.9",
     "lit": "^2.0.2",
     "regenerator-runtime": "0.13.7",
-    "ses": "^0.15.11"
+    "ses": "^0.18.2"
   },
   "devDependencies": {
     "caniuse-lite": "1.0.30001251",

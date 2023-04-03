@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* global lockdown */
 import 'ses/dist/ses.umd'; // adds lockdown, harden, and Compartment
-import '@endo/eventual-send/shim'; // adds support needed by E
 
 const errorTaming = process.env.NODE_ENV === 'development' ? 'unsafe' : 'safe';
 
