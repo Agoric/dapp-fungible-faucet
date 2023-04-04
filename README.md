@@ -5,10 +5,10 @@ TL;DR:
 The Fungible Faucet Dapp sends tokens to a user's wallet when they
 click the "Mint Fungible Tokens" button.
 
-Install the [prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric.html). Then checkout the latest `beta` release for the sdk:
+Install the [prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric.html). Then checkout the `beta-dapp` branch in the sdk:
 ```sh
 cd agoric-sdk
-git checkout beta
+git checkout beta-dapp
 yarn && yarn build
 ```
 
