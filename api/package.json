@@ -26,12 +26,7 @@
   "dependencies": {
     "@endo/eventual-send": "^0.15.5",
     "@endo/marshal": "^0.6.9",
-    "@agoric/zoe": "beta"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@agoric"
-    ]
+    "@agoric/zoe": "community-dev"
   },
   "prettier": {
     "trailingComma": "all",
