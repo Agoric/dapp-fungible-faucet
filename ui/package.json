@@ -26,9 +26,32 @@
     ]
   },
   "eslintConfig": {
-    "extends": [
-      "@agoric"
-    ]
+    "ignorePatterns": [
+      "**/*.umd.js",
+      "**/generated/*"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "env": {
+      "es2020": true,
+      "browser": true
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      }
+    }
   },
   "eslintIgnore": [
     "dist/"
@@ -44,8 +67,8 @@
     "watcherGlob": "**/*.html"
   },
   "dependencies": {
-    "@agoric/notifier": "beta",
-    "@agoric/wallet-connection": "beta",
+    "@agoric/notifier": "community-dev",
+    "@agoric/wallet-connection": "community-dev",
     "@endo/captp": "^2.0.3",
     "@endo/marshal": "^0.6.9",
     "lit": "^2.0.2",

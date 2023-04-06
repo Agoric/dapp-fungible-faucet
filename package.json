@@ -1,6 +1,6 @@
 {
   "name": "dapp-fungible-faucet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "useWorkspaces": true,
   "workspaces": [
@@ -25,11 +25,11 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.7.1",
-    "@agoric/solo": "beta",
-    "@agoric/cosmic-swingset": "beta"
+    "@agoric/solo": "community-dev",
+    "@agoric/cosmic-swingset": "community-dev"
   },
   "scripts": {
-    "preinstall": "node -e \"process.env.AGORIC_INSTALL && process.exit(0); console.warn('please use: agoric install . For details, see https://agoric.com/documentation/'); process.exit(1)\"",
+    "preinstall": "node -e \"process.env.AGORIC_INSTALL && process.exit(0); console.warn('please use: agoric install community-dev. For details, see https://agoric.com/documentation/'); process.exit(1)\"",
     "lint": "yarn workspaces run lint-fix",
     "lint-check": "yarn workspaces run lint-check",
     "test": "yarn workspaces run test",
@@ -37,7 +37,7 @@
     "build": "yarn workspaces run build"
   },
   "dependencies": {
-    "agoric": "beta"
+    "agoric": "community-dev"
   },
   "ava": {
     "files": [

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // @ts-check
-/* globals document mdc */
+/* globals mdc */
 import './install-ses-lockdown.js';
 import { E } from '@endo/eventual-send';
 import { observeNotifier } from '@agoric/notifier';

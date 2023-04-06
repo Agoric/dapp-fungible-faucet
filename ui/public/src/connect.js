@@ -1,5 +1,4 @@
 // @ts-check
-/* globals document */
 import { rpc } from '../lib/socket.js';
 import { activateSocket as startApi } from '../lib/api-client.js';
 
