@@ -7,8 +7,7 @@ import path from 'path';
 import bundleSource from '@endo/bundle-source';
 
 import { E } from '@endo/eventual-send';
-import { makeFakeVatAdmin } from '@agoric/zoe/tools/fakeVatAdmin.js';
-import { makeZoeKit } from '@agoric/zoe';
+import { makeZoeKitForTest } from '@agoric/zoe/tools/setup-zoe.js';
 import { AmountMath } from '@agoric/ertp';
 
 const filename = new URL(import.meta.url).pathname;
@@ -17,9 +16,7 @@ const dirname = path.dirname(filename);
 const contractPath = `${dirname}/../src/contract.js`;
 
 test('zoe - mint payments', async (t) => {
-  const { zoeService } = makeZoeKit(makeFakeVatAdmin().admin);
-  const feePurse = E(zoeService).makeFeePurse();
-  const zoe = E(zoeService).bindDefaultFeePurse(feePurse);
+  const { zoeService: zoe } = makeZoeKitForTest();
 
   // pack the contract
   const bundle = await bundleSource(contractPath);
