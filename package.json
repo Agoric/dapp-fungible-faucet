@@ -10,9 +10,13 @@
     "ui"
   ],
   "devDependencies": {
+    "@agoric/cosmic-swingset": "beta",
+    "@agoric/solo": "beta",
     "@endo/eslint-plugin": "^0.3.24",
     "@jessie.js/eslint-plugin": "^0.1.3",
+    "agoric": "beta",
     "ava": "^4.3.1",
+    "concurrently": "^8.2.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "^14.2.0",
@@ -24,17 +28,19 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "prettier": "^2.7.1",
-    "@agoric/solo": "beta",
-    "@agoric/cosmic-swingset": "beta"
+    "prettier": "^2.7.1"
   },
   "scripts": {
-    "preinstall": "node -e \"process.env.AGORIC_INSTALL && process.exit(0); console.warn('please use: agoric install . For details, see https://agoric.com/documentation/'); process.exit(1)\"",
     "lint": "yarn workspaces run lint-fix",
     "lint-check": "yarn workspaces run lint-check",
     "test": "yarn workspaces run test",
     "integration-test": "yarn ava",
-    "build": "yarn workspaces run build"
+    "build": "yarn workspaces run build",
+    "start:wallet": "agoric open",
+    "start:deploy": "agoric deploy contract/deploy.js api/deploy.js",
+    "start:sim": "agoric start -v",
+    "start:ui": "cd ui && yarn start",
+    "start": "concurrently --kill-others-on-error -c \"bgBlue.bold,bgMagenta,bgYellow.bold\" --names \"SIM,DEP,UI \" \"npm run start:sim --reset\" npm:start:deploy npm:start:ui"
   },
   "dependencies": {
     "agoric": "beta"

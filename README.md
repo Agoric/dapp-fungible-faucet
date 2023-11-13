@@ -5,32 +5,23 @@ TL;DR:
 The Fungible Faucet Dapp sends tokens to a user's wallet when they
 click the "Mint Fungible Tokens" button.
 
-Install the [prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric.html). Then checkout the latest `beta` release for the sdk:
+Install the [prerequisites](https://agoric.com/documentation/getting-started/before-using-agoric.html).
+
+In the parent directory of where you want to put your dapp project, create your own (`my-fungible-faucet` in this example, based on the `dapp-fungible-faucet` repository):
 ```sh
-cd agoric-sdk
-git checkout beta
-yarn && yarn build
+yarn create @agoric/dapp --dapp-template dapp-fungible-faucet --dapp-branch beta my-fungible-faucet
 ```
 
-Then in a first terminal in the directory where you want to put your dapp, install the dapp:
-```sh
-agoric init --dapp-template dapp-fungible-faucet --dapp-branch beta my-fungible-faucet
+Install and run just like any other NPM application:
+```
+# Enter the dapp folder
 cd my-fungible-faucet
-# Start the Agoric platform
-agoric install && agoric start --reset
+# Install dependencies
+yarn install
+# Start the Agoric platform with this dapp
+yarn start
 ```
 
-In a second terminal, deploy this contract and the API server
-```sh
-agoric deploy contract/deploy.js
-agoric deploy api/deploy.js
-```
-
-In a third terminal, 
-```sh
-# Navigate to the `ui` directory and start a local server
-cd ui && yarn start
-```
 Then navigate to http://127.0.0.1:3000.
 
 The Fungible Faucet Dapp is the simplest [Agoric
@@ -50,10 +41,9 @@ opposed to using a framework).
 
 ## Using the Dapp
 
-1. Navigate to http://127.0.0.1:3000.
-2. Enter `agoric open` in your terminal
-3. A window for your wallet should open.
-4. Under "Dapps" in the wallet, enable the FungibleFaucet Dapp:
+1. Enter `yarn start:wallet` in your terminal to open the Wallet UI.
+2. Navigate a fresh browser tab to http://127.0.0.1:3000 to go to the Dapp UI.
+3. Under "Dapps" in the wallet, enable the FungibleFaucet Dapp:
 
 ![Enable Dapp](./readme-assets/enable-dapp.png)
 
