@@ -10,11 +10,11 @@
     "ui"
   ],
   "devDependencies": {
-    "@agoric/cosmic-swingset": "beta",
-    "@agoric/solo": "beta",
+    "@agoric/cosmic-swingset": "getting-started-dev",
+    "@agoric/solo": "getting-started-dev",
     "@endo/eslint-plugin": "^0.3.24",
     "@jessie.js/eslint-plugin": "^0.1.3",
-    "agoric": "beta",
+    "agoric": "getting-started-dev",
     "ava": "^4.3.1",
     "concurrently": "^8.2.2",
     "eslint": "^7.32.0",
@@ -43,7 +43,7 @@
     "start": "concurrently --kill-others-on-error -c \"bgBlue.bold,bgMagenta,bgYellow.bold\" --names \"SIM,DEP,UI \" \"npm run start:sim --reset\" npm:start:deploy npm:start:ui"
   },
   "dependencies": {
-    "agoric": "beta"
+    "agoric": "getting-started-dev"
   },
   "ava": {
     "files": [
