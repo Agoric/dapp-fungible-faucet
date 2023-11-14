@@ -1,5 +1,5 @@
 {
-  "name": "dapp-fungible-faucet-contract",
+  "name": "@agoric/dapp-fungible-faucet-contract",
   "version": "0.1.0",
   "private": true,
   "description": "Contract for the Agoric Dapp",
@@ -14,14 +14,7 @@
     "lint-check-jessie": "eslint -c '.eslintrc-jessie.js' '**/*.{js,jsx}'"
   },
   "devDependencies": {
-    "ava": "^4.3.1",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-config-jessie": "^0.0.6",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.7.1"
+    "ava": "^4.3.1"
   },
   "dependencies": {
     "@endo/bundle-source": "^2.1.1",
@@ -52,11 +45,6 @@
     "url": "https://github.com/Agoric/agoric/issues"
   },
   "homepage": "https://github.com/Agoric/agoric#readme",
-  "eslintConfig": {
-    "extends": [
-      "@agoric"
-    ]
-  },
   "prettier": {
     "trailingComma": "all",
     "singleQuote": true

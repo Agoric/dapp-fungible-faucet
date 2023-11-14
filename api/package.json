@@ -1,5 +1,5 @@
 {
-  "name": "dapp-fungible-faucet-api",
+  "name": "@agoric/dapp-fungible-faucet-api",
   "private": true,
   "version": "0.1.0",
   "description": "Agoric Dapp web server handler",
@@ -13,25 +13,11 @@
     "lint-fix-jessie": "eslint -c '.eslintrc-jessie.js' --fix '**/*.{js,jsx}'",
     "lint-check-jessie": "eslint -c '.eslintrc-jessie.js' '**/*.{js,jsx}'"
   },
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-config-jessie": "^0.0.6",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-jsdoc": "^39.3.3",
-    "prettier": "^2.5.1"
-  },
   "dependencies": {
     "@endo/eventual-send": "^0.15.5",
     "@endo/marshal": "^0.6.9",
+    "@agoric/dapp-fungible-faucet-ui": "^0.0.1",
     "@agoric/zoe": "getting-started-dev"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@agoric"
-    ]
   },
   "prettier": {
     "trailingComma": "all",
