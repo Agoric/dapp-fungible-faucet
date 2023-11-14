@@ -7,7 +7,7 @@ test('workflow', t => {
   return gettingStartedWorkflowTest(t, {
     init: [
       '--dapp-template', 'dapp-fungible-faucet',
-      '--dapp-branch', process.env.GITHUB_HEAD_REF,
+      ...(process.env.GITHUB_HEAD_REF ? ['--dapp-branch', process.env.GITHUB_HEAD_REF] : []),
     ]
   })
 });
