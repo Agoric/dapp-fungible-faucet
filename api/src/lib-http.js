@@ -4,7 +4,6 @@
 // This functionality will later be merged into the agoric-sdk.
 
 // @ts-check
-/* global harden */
 import { E } from '@endo/eventual-send';
 import { Far } from '@endo/marshal';
 

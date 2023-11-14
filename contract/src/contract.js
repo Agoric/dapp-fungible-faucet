@@ -1,5 +1,4 @@
 // @ts-check
-/* global harden */
 import '@agoric/zoe/exported.js';
 import { AmountMath } from '@agoric/ertp';
 import { Far } from '@endo/marshal';
