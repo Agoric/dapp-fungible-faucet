@@ -1,4 +1,6 @@
-import 'ses/dist/ses.umd';
+/* eslint-env node */
+/* global repairIntrinsics */
+import 'ses/dist/ses.umd.js';
  // adds lockdown, harden, and Compartment
 const errorTaming = process.env.NODE_ENV === 'development' ? 'unsafe' : 'safe';
 

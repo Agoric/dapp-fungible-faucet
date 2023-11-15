@@ -1,13 +1,14 @@
 // @ts-check
 
-/* global process */
+/* eslint-env node */
 // Agoric Dapp api deployment script
 
 import fs from 'fs';
 import { E } from '@endo/eventual-send';
 import '@agoric/zoe/exported.js';
 
-import installationConstants from "@agoric/dapp-fungible-faucet-ui/public/conf/installationConstants.js";
+// eslint-disable-next-line import/no-relative-packages
+import installationConstants from "../ui/public/conf/installationConstants.js";
 
 // deploy.js runs in an ephemeral Node.js outside of swingset. The
 // spawner runs within ag-solo, so is persistent.  Once the deploy.js
