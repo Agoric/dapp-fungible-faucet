@@ -6,7 +6,7 @@ import { E } from '@endo/eventual-send';
 import { observeNotifier } from '@agoric/notifier';
 import dappConstants from '../lib/constants.js';
 import { connect } from './connect.js';
-import '@agoric/wallet-connection/agoric-wallet-connection.js';
+import '@agoric/web-components/agoric-wallet-connection.js';
 
 const {
   INVITE_BRAND_BOARD_ID,

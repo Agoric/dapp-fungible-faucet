@@ -40,16 +40,16 @@
   },
   "dependencies": {
     "@agoric/notifier": "getting-started-dev",
-    "@agoric/wallet-connection": "getting-started-dev",
+    "@agoric/web-components": "getting-started-dev",
     "@endo/captp": "^2.0.3",
     "@endo/marshal": "^0.6.9",
     "lit": "^2.0.2",
     "regenerator-runtime": "0.13.7",
-    "ses": "^0.15.11"
+    "ses": "^0.18.8"
   },
   "devDependencies": {
     "caniuse-lite": "1.0.30001251",
-    "parcel": "^2.0.0",
+    "parcel": "^2.10.0",
     "parcel-plugin-static-files-copy": "^2.5.0",
     "rimraf": "^3.0.2"
   },
