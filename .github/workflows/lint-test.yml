@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # TODO: ['14.x', '16.x']
-        node-version: [14.x]
+        node-version: [18.18.x]
     steps:
     - name: Checkout dapp
       uses: actions/checkout@v2
